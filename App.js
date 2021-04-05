@@ -12,19 +12,11 @@ import {
  
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Login} from './src/screens/Login'
 
 const App = () => {
   return (
-    <SafeAreaView style={backgroundStyle}>
-     
-    </SafeAreaView>
+    <Login/>
   );
 };
 
