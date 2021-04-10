@@ -25,11 +25,12 @@ const styles = StyleSheet.create({
         backgroundColor: COLOR.yellow,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: PixelRatio.roundToNearestPixel(10),
+        borderRadius: PixelRatio.roundToNearestPixel(8),
         maxHeight:  PixelRatio.roundToNearestPixel(40),
     },
     textStyle: {
-        color: COLOR.red,
-        fontSize: PixelRatio.roundToNearestPixel(12),
+        color: COLOR.black362624,
+        fontWeight: '700',
+        fontSize: PixelRatio.roundToNearestPixel(16),
     }
 })
