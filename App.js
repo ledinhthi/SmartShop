@@ -9,14 +9,16 @@
 
 import React from 'react';
 import {
- 
 } from 'react-native';
 
-import {Login} from './src/screens/Login'
-
+import { GuestStack } from './src/navigation/GuestNavigation'
+import { Dashboard } from './src/navigation/AppNavigation'
+import { NavigationContainer } from '@react-navigation/native'
 const App = () => {
   return (
-    <Login/>
+    <NavigationContainer>
+      <Dashboard />
+    </NavigationContainer>
   );
 };
 

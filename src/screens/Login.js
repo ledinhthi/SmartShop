@@ -4,12 +4,15 @@ import {
     TouchableWithoutFeedback, Image, Keyboard, TouchableOpacity
 } from 'react-native';
 import * as data from "../models/index"
-import { COLOR } from '../utils/Constant'
+import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
+import Constant from '../utils/Constant'
 
-
-export const Login = (props) => {
+export const Login = ({route, navigation}) => {
+    const onRegisterBtn = () => {
+        navigation.navigate(Constant.PAGE_KEY.REGISTER_PAGE_KEY)
+    }
     return (
         <TouchableWithoutFeedback onPress={() => {
             Keyboard.dismiss();
@@ -33,7 +36,9 @@ export const Login = (props) => {
                             Quên mật khẩu?
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end' }}>
+                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end' }}
+                        onPress ={onRegisterBtn}
+                    >
                         <Text style={[styles.text]}>
                             Đăng ký
                         </Text>
@@ -51,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: COLOR.white
+        backgroundColor: ColorApp.white
     },
     subContainer: {
         flex: 1,
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
         height: PixelRatio.roundToNearestPixel(48),
     },
     text: {
-        color: COLOR.black362624,
+        color: ColorApp.black362624,
         fontSize: PixelRatio.roundToNearestPixel(14),
         fontWeight: '700'
     }

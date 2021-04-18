@@ -1,46 +1,56 @@
 import React from 'react';
 import {
     Text, View, TextInput, Button, StyleSheet, PixelRatio, SafeAreaView, KeyboardAvoidingView,
-    TouchableWithoutFeedback, Image, Keyboard
+    TouchableWithoutFeedback, Image, Keyboard, TouchableHighlight
 } from 'react-native';
 import * as data from "../models/index"
-import { COLOR } from '../utils/Constant'
+import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 
-export const Login = (props) => {
+export const Register = (props) => {
+    const goBack = () => {
+        props.navigation.goBack()
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => {
             Keyboard.dismiss();
         }}>
-            <KeyboardAvoidingView style={styles.subContainer}>
-                <Image style={styles.logo}
-                    source={{ uri: "http://smartshopnew.tk/public/frontend/images/logo.jpg" }}
+            <KeyboardAvoidingView style={styles.subContainer}
+            >
+                {/* Đăng ký title */}
+                <ScrollView style={{ width: '100%', height: '100%' }}
                 >
-                </Image>
-                {/* Username Input */}
-                <TxtInput txtInput={[styles.input, { marginTop: 50 }]} placeholder={"Nhập tài khoản"} title={"Tài khoản"}>
-                </TxtInput>
-                {/* Password Input */}
-                <TxtInput txtInput={[styles.input]} placeholder={"Nhập mật khẩu"} title={"Mật khẩu"}>
-                </TxtInput>
-                {/* Forgot, register */}
-                <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                    <TouchableOpacity style={{ alignSelf: 'flex-start' }}>
-                        <Text style = {styles.text}>
-                            Quên mật khẩu?
-                        </Text>
+                    <Text style={[styles.text, {textAlign: 'center', fontWeight: '700', fontSize: PixelRatio.roundToNearestPixel(17), }]}>
+                        ĐĂNG KÝ
+                   </Text>
+                    {/* Họ và tên  */}
+                    <TxtInput txtInput={[styles.input, { marginTop: 40 }]} placeholder={"Họ và tên"} title={"Họ tên"}>
+                    </TxtInput>
+                    {/* Địa chỉ */}
+                    <TxtInput txtInput={[styles.input, { marginTop: 30 }]} placeholder={"Địa chỉ email"} title={"Địa chỉ"}>
+                    </TxtInput>
+                    {/* Mật khẩu */}
+                    <TxtInput txtInput={[styles.input, { marginTop: 30 }]} placeholder={"Mật khẩu"} title={"Mật khẩu"}>
+                    </TxtInput>
+                    {/* Nhập lại mật khẩu */}
+                    <TxtInput txtInput={[styles.input, { marginTop: 30 }]} placeholder={"Nhập lại mật khẩu"} title={"Nhập lại mật khẩu"}>
+                    </TxtInput>
+                    {/* Nhập Số điện thoại */}
+                    <TxtInput txtInput={[styles.input, { marginTop: 30 }]} placeholder={"Số điện thoại"} title={"Số điện thoại"}>
+                    </TxtInput>
+                    {/* Button */}
+                    <ActionBtn title={"Đăng Ký"} actionBtn={styles.loginBtn} />
+                    {/* Back to login */}
+                    <TouchableOpacity onPress={goBack}>
+                        <Text style={[styles.text, {marginTop: 20, color: ColorApp.black, fontWeight: '400', fontSize: PixelRatio.roundToNearestPixel(17) }]}>
+                            Quay lại
+                   </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-                        <Text style = {styles.text}>
-                            Đăng ký
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-                {/* Button */}
-                <ActionBtn title={"Đăng nhập"} actionBtn={styles.loginBtn} />
+                </ScrollView>
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     )
@@ -50,32 +60,31 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: COLOR.white
+        backgroundColor: ColorApp.white
     },
-    subContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    logo: {
-        height: 100,
-        width: 200,
-        resizeMode: 'contain'
+
+    text: {
+        color: ColorApp.yellow,
+        fontSize: PixelRatio.roundToNearestPixel(14),
+        fontWeight: '400'
     },
     input: {
-        width: '80%',
+        width: '100%',
         height: PixelRatio.roundToNearestPixel(48),
         marginTop: PixelRatio.roundToNearestPixel(30),
     },
     loginBtn: {
-        marginTop: 24,
-        width: '80%',
+        marginTop: 30,
+        width: '100%',
         height: PixelRatio.roundToNearestPixel(48),
     },
-    text: {
-        color: COLOR.yellow,
-        fontSize: PixelRatio.roundToNearestPixel(14)
-    }
+    subContainer: {
+        flex: 1,
+        paddingVertical: 40,
+        justifyContent: 'center',
+        // alignItems: 'center',
+        paddingHorizontal: 50,
+    },
 })
 
 

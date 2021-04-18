@@ -10,7 +10,7 @@ import { ActionBtn } from '../components/ActionBtn'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-export const Videos = (props) => {
+export const DetailProduct = (props) => {
     return (
         <View>
 

@@ -3,7 +3,7 @@ import {
     Text, View, TextInput, Button, StyleSheet, PixelRatio, SafeAreaView, KeyboardAvoidingView,
     TouchableOpacity, Image
 } from 'react-native';
-import { COLOR } from '../utils/Constant'
+import ColorApp from '../utils/ColorApp'
 
 export const ActionBtn = (props) => {
     return (
@@ -22,14 +22,14 @@ export const ActionBtn = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: 100,
-        backgroundColor: COLOR.yellow,
+        backgroundColor: ColorApp.yellow,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: PixelRatio.roundToNearestPixel(8),
         maxHeight:  PixelRatio.roundToNearestPixel(40),
     },
     textStyle: {
-        color: COLOR.black362624,
+        color: ColorApp.black362624,
         fontWeight: '700',
         fontSize: PixelRatio.roundToNearestPixel(16),
     }
