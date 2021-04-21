@@ -22,7 +22,8 @@ export const Register = (props) => {
             <KeyboardAvoidingView style={styles.subContainer}
             >
                 {/* Đăng ký title */}
-                <ScrollView style={{ width: '100%', height: '100%' }}
+                <ScrollView 
+                contentContainerStyle ={{flexGrow: 1,   paddingVertical: 40,}}
                 >
                     <Text style={[styles.text, {textAlign: 'center', fontWeight: '700', fontSize: PixelRatio.roundToNearestPixel(17), }]}>
                         ĐĂNG KÝ
@@ -80,10 +81,10 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         flex: 1,
-        paddingVertical: 40,
         justifyContent: 'center',
         // alignItems: 'center',
         paddingHorizontal: 50,
+        backgroundColor: ColorApp.white
     },
 })
 

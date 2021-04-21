@@ -7,25 +7,38 @@ import {
 } from "@react-navigation/stack";
 
 import * as React from "react";
-import { ListProduct } from "../screens/ListProduct"
+import { MainPage } from "../screens/MainPage"
 import { DetailProduct } from "../screens/DetailProduct"
 import { Product } from "../screens/Product"
 import { BasketStore } from "../screens/BasketStore"
 import { Videos } from "../screens/Videos"
 import Constant from "../utils/Constant"
+import ColorApp from "../utils/ColorApp";
 
 const Drawer = createDrawerNavigator();
 
 const MainStack = createStackNavigator();
 
-const MainPage = (props) => {
+const MainPageStack = (props) => {
   return (
-    <MainStack.Navigator headerMode = 'none'>
+    <MainStack.Navigator >
       {/* Show list product */}
-      <MainStack.Screen name={Constant.PAGE_KEY.LIST_PRODUCT_PAGE_KEY} component={ListProduct}>
+      <MainStack.Screen 
+        options = {
+          {
+            headerShown: false
+          }
+        }
+      name={Constant.PAGE_KEY.LIST_PRODUCT_PAGE_KEY} component={MainPage}>
       </MainStack.Screen>
       {/* Show detail product */}
-      <MainStack.Screen name={Constant.PAGE_KEY.DETAIL_PRODUCT_PAGE_KEY} component={DetailProduct}>
+      <MainStack.Screen 
+      options = {
+        {
+          headerTitle: 'Chi tiết sản phẩm'
+        }
+      }
+      name={Constant.PAGE_KEY.DETAIL_PRODUCT_PAGE_KEY} component={DetailProduct}>
       </MainStack.Screen>
     </MainStack.Navigator>
   )
@@ -36,17 +49,22 @@ export const Dashboard = () => {
   return (
     <Drawer.Navigator initialRouteName={Constant.PAGE_KEY.MAIN_PAGE_KEY}
       drawerContentOptions={{
-        activeTintColor: '#e91e63',
-        itemStyle: { marginVertical: 30 },
+        activeTintColor: ColorApp.yellow,
       }}>
       {/* Main page*/}
-      <Drawer.Screen name={Constant.PAGE_KEY.MAIN_PAGE_KEY} component={MainPage}>
+      <Drawer.Screen name={Constant.PAGE_KEY.MAIN_PAGE_KEY} component={MainPageStack}>
       </Drawer.Screen>
       {/* Sản phẩm  */}
       <Drawer.Screen name={Constant.PAGE_KEY.PRODUCT_PAGE_KEY} component={Product}>
       </Drawer.Screen>
       {/* Giỏ hàng */}
-      <Drawer.Screen name={Constant.PAGE_KEY.BASKET_PAGE_KEY} component={BasketStore}>
+      <Drawer.Screen 
+      options = {
+        {
+          headerTitle: 'Giỏ Hàng'
+        }
+      }
+      name={Constant.PAGE_KEY.BASKET_PAGE_KEY} component={BasketStore}>
       </Drawer.Screen>
       {/* Videos */}
       <Drawer.Screen name={Constant.PAGE_KEY.VIDEO_PAGE_KEY} component={Videos}>

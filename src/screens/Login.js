@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     subContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: ColorApp.white
     },
     logo: {
         height: 100,
