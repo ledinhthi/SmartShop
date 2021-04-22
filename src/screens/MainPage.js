@@ -13,7 +13,9 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { color } from 'react-native-reanimated';
 import Constant from '../utils/Constant';
-
+import { useStore } from "../stores/useStore";
+import { observer } from "mobx-react";
+import {ListDeviceModal} from "../components/ListDeviceModal"
 const DATA_SLIDE = [
     {
         id: 0,
@@ -121,7 +123,7 @@ const ProductItem = (props) => {
                         source={require("../../images/shopping-cart.png")}
                     >
                     </Image>
-                    <Text style={[styles.textStyle, {fontSize: 11, marginLeft: 4, color: ColorApp.white }]}>
+                    <Text style={[styles.textStyle, { fontSize: 11, marginLeft: 4, color: ColorApp.white }]}>
                         Thêm giỏ hàng
                         </Text>
                 </TouchableOpacity>
@@ -132,7 +134,7 @@ const ProductItem = (props) => {
                         source={require("../../images/visibility.png")}
                     >
                     </Image>
-                    <Text style={[styles.textStyle, {fontSize: 11, marginLeft: 4, color: ColorApp.white }]}>
+                    <Text style={[styles.textStyle, { fontSize: 11, marginLeft: 4, color: ColorApp.white }]}>
                         Xem nhanh
                         </Text>
                 </TouchableOpacity>
@@ -141,7 +143,9 @@ const ProductItem = (props) => {
     )
 }
 
-export const MainPage = (props) => {
+export const MainPage = observer(({ route, navigation }) => {
+    const [isShowListBranch, setIsShowListBranch] = React.useState(false);
+
     return (
         <View style={styles.container}>
             {/* Logo */}
@@ -153,7 +157,7 @@ export const MainPage = (props) => {
             <View style={styles.header}>
                 <TouchableOpacity
                     onPress={() => {
-                        props.navigation.openDrawer();
+                        setIsShowListBranch(true)
                     }}
                 >
                     <Image style={{ width: 25, height: 25 }}
@@ -165,7 +169,7 @@ export const MainPage = (props) => {
                 {/* Basket */}
                 <TouchableOpacity
                     onPress={() => {
-                        props.navigation.navigate(Constant.PAGE_KEY.BASKET_PAGE_KEY)
+                        navigation.navigate(Constant.PAGE_KEY.BASKET_PAGE_KEY)
                     }}
                 >
                     <Image style={{ width: 25, height: 25, marginLeft: 20 }}
@@ -210,7 +214,7 @@ export const MainPage = (props) => {
                     data={DATA_SLIDE}
                     renderItem={({ item, index }) => {
                         return (
-                            <ProductItem item={item} {...props} />
+                            <ProductItem item={item} navigation={navigation} />
                         )
                     }}
                     numColumns={2}
@@ -227,9 +231,10 @@ export const MainPage = (props) => {
                 >
                 </FlatList>
             </ScrollView>
+            {isShowListBranch && <ListDeviceModal  isShowSliding= {isShowListBranch} setIsShowSliding ={setIsShowListBranch}/>}
         </View>
     )
-}
+})
 const styles = StyleSheet.create({
     container: {
         flex: 1,

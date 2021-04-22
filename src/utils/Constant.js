@@ -65,9 +65,11 @@ export default module = {
     MAIN_PAGE_KEY: 'MainPage',
     PRODUCT_PAGE_KEY: 'ProductPage',
     BASKET_PAGE_KEY: 'BasketPage',
+    BASKET_DETAIL_PAGE_KEY: 'BasketDetailPage',
     VIDEO_PAGE_KEY: 'VideoPage',
     LIST_PRODUCT_PAGE_KEY: 'ListProductPage',
-    DETAIL_PRODUCT_PAGE_KEY: 'DetailProductPage'
+    DETAIL_PRODUCT_PAGE_KEY: 'DetailProductPage',
+    ORDER_PAGE_KEY: 'OrderPage'
   },
 
   STACK_SCREEN_KEY: {
@@ -133,7 +135,17 @@ export default module = {
     HAVE_COMMENT_ON_PAGE: 4,
     HAVE_DATA_ON_PAGE: 5,
     HAVE_DATA_SHARED: 6
+  },
+
+  ORDER_MODAL_TYPE: {
+    LIST_CITY_MODAL: 0,
+    LIST_DISTRICT_MODAL: 1,
+    LIST_WARD_MODAL: 2,
+    PAYMENT_METHOD_MODAL: 3,
+    ORDERED_INFORMATION: 4
   }
+
+
 }
 
 function getDeviceResolution(isWidth) {
@@ -153,7 +165,7 @@ function checkIOS() {
 //   return uniqueId;
 // }
 
-// /* Check ipX and ip11 */
+/* Check ipX and ip11 */
 // function checkIPhoneX() {
 //   let _isIphoneX = false;
 //   if (Platform.OS === "ios") {

@@ -11,8 +11,9 @@ export const TxtInput = (props) => {
             <Text style={styles.text}>
                 {props.title || ""}
             </Text>
-            <TextInput style={{height: PixelRatio.roundToNearestPixel(48)}}
+            <TextInput style={{ height: PixelRatio.roundToNearestPixel(48) }}
                 placeholder={props.placeholder || ""}
+                editable={props?.editable || true}
                 placeholderTextColor={ColorApp.gray}>
             </TextInput>
         </View>

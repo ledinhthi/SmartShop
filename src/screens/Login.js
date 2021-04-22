@@ -8,8 +8,9 @@ import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
 import Constant from '../utils/Constant'
-
-export const Login = ({route, navigation}) => {
+import { useStore } from "../stores/useStore";
+import { observer } from "mobx-react";
+export const Login = observer(({route, navigation}) => {
     const onRegisterBtn = () => {
         navigation.navigate(Constant.PAGE_KEY.REGISTER_PAGE_KEY)
     }
@@ -49,7 +50,7 @@ export const Login = ({route, navigation}) => {
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     )
-}
+})
 
 const styles = StyleSheet.create({
     container: {

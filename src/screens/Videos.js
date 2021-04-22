@@ -8,15 +8,16 @@ import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useStore } from "../stores/useStore";
+import { observer } from "mobx-react";
 
-
-export const Videos = (props) => {
+export const Videos = observer(({route, navigation}) => {
     return (
         <View>
 
         </View>
     )
-}
+})
 const styles = StyleSheet.create({
     container: {
         flex: 1,

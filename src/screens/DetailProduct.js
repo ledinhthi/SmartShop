@@ -8,15 +8,16 @@ import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
-
+import { useStore } from "../stores/useStore";
+import { observer } from "mobx-react";
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 
-export const DetailProduct = (props) => {
+export const DetailProduct = observer(({route, navigation}) => {
     const [productInfor, setProductInfor] = React.useState(null);
 
     React.useEffect(() => {
-        let product = props.route?.params?.product;
+        let product = route?.params?.product;
         console.log("Product", product)
         setProductInfor(product);
         return () => {
@@ -86,7 +87,7 @@ export const DetailProduct = (props) => {
             </View>
             : null
     )
-}
+})
 const styles = StyleSheet.create({
     container: {
         flex: 1,

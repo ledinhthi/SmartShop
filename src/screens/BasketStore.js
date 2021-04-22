@@ -1,14 +1,17 @@
 import React from 'react';
 import {
     Text, View, TextInput, Button, StyleSheet, PixelRatio, SafeAreaView, KeyboardAvoidingView,
-    TouchableWithoutFeedback, Image, Keyboard, Dimensions, FlatList
+    TouchableWithoutFeedback, Image, Keyboard, Dimensions, FlatList, TouchableOpacity,
+    ScrollView
 } from 'react-native';
+import Checkbox from "@react-native-community/checkbox"
 import * as data from "../models/index"
 import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { useStore } from "../stores/useStore";
+import { observer } from "mobx-react";
+import Constants from "../utils/Constant"
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 
@@ -65,14 +68,29 @@ const DATA_SLIDE = [
 ]
 
 const ProductItem = (props) => {
+    let [chosenNumber, setChosenNumber] = React.useState(0);
+    const [isCheckedCheckBox1, setIsCheckedCheckBox1] = React.useState(false);
+    const increaseChosenNumber = () => {
+        chosenNumber = chosenNumber + 1;
+        setChosenNumber(chosenNumber)
+    }
+    const decreaseChosenNumber = () => {
+        chosenNumber = chosenNumber - 1;
+        setChosenNumber(chosenNumber)
+    }
     return (
         <View style={styles.productItem}>
             {/* Checkbox */}
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ width: 20, height: 20, alignSelf: 'center' }}>
-                    <Text style={[styles.textStyle, { textAlign: 'center' }]}>
-                        +
-                </Text>
+                    {/* <Checkbox
+                       style={{ width: 20, height: 20 }}
+                       boxType='square'
+                       tintColor={ColorApp.grayE0}
+                       onCheckColor={ColorApp.gray1D2129}
+                       onFillColor={isCheckedCheckBox1 ? ColorApp.yellowFFED43 : ColorApp.grayF6F6F6}
+                       onTintColor={isCheckedCheckBox1 ? ColorApp.gray231816 : ColorApp.grayE0E0E0}
+                    ></Checkbox> */}
                 </View>
                 {/* Image */}
                 <Image style={{ width: 100, height: 200, marginLeft: 10 }}
@@ -103,30 +121,44 @@ const ProductItem = (props) => {
 
                 </View>
                 {/* Increate, decrease Item */}
-                <View style={{ width: '50%', flexDirection: 'row', width: 80, height: 25, borderWidth: 1, borderColor: ColorApp.grayAD }}>
-                    <TouchableOpacity style={styles.increaseDecrease}>
-                        <Text style={[styles.textStyle]}>
-                            -
-                 </Text>
+                <View style={{ flexDirection: 'row', width: 80, height: 25, borderWidth: 1, borderColor: ColorApp.grayAD }}>
+                    <TouchableOpacity style={{ flex: 1 }}
+                        onPress={decreaseChosenNumber}
+                    >
+                        <View style={styles.increaseDecrease}>
+
+                            <Text style={[styles.textStyle]}>
+                                -
+                            </Text>
+
+                        </View>
                     </TouchableOpacity>
-                    {/* Content */}
-                    <Text style={[styles.textStyle]}>
-                        1
-                  </Text>
-                    {/* Increase */}
-                    <TouchableOpacity style={styles.increaseDecrease}>
-                        <Text style={{ flexGrow: 1, textAlign: 'center' }}>
-                            +
-                    </Text>
+
+                    <View style={styles.increaseDecrease}>
+                        <Text style={[styles.textStyle]}>
+                            {chosenNumber}
+                        </Text>
+                    </View>
+                    <TouchableOpacity style={{ flex: 1 }}
+                        onPress={increaseChosenNumber}
+                    >
+                        <View style={styles.increaseDecrease}>
+
+                            <Text style={styles.textStyle}>
+                                +
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
             </View >
+            {/* Go to Order */}
+
         </View>
     )
 }
 
 
-export const BasketStore = (props) => {
+export const BasketStore = observer(({ route, navigation }) => {
     return (
         <View style={styles.container}>
             {/* Header */}
@@ -138,11 +170,11 @@ export const BasketStore = (props) => {
             <FlatList
                 scrollEnabled={true}
                 showsVerticalScrollIndicator={true}
-                style={{ marginTop: 20, flex: 1 }}
+                style={{ marginVertical: 20 }}
                 data={DATA_SLIDE}
                 renderItem={({ item, index }) => {
                     return (
-                        <ProductItem item={item} {...props} />
+                        <ProductItem item={item} navigation={navigation} />
                     )
                 }}
                 bounces={true}
@@ -157,9 +189,30 @@ export const BasketStore = (props) => {
             >
             </FlatList>
             {/* Đặt hàng */}
+            <View style={{ marginTop: 20, alignSelf: 'flex-start', paddingHorizontal: 20 }}>
+                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(30), width: 100, 
+                    paddingHorizontal: 2, 
+                    flexDirection: 'row',
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                      borderRadius: 3, backgroundColor: ColorApp.yellow }}
+                      onPress = {() => {
+                        navigation.navigate(Constants.PAGE_KEY.ORDER_PAGE_KEY);
+                      }}
+                      >
+                    <Image style={{ height: 15, width: 15, tintColor: ColorApp.white }}
+                        resizeMode='contain'
+                        source={require("../../images/shopping-cart.png")}
+                    >
+                    </Image>
+                    <Text style={[styles.textStyle, { fontSize: 11, marginLeft: 4, color: ColorApp.white }]}>
+                        Đặt hàng
+                        </Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
-}
+})
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -188,7 +241,7 @@ const styles = StyleSheet.create({
     increaseDecrease:
     {
         flexGrow: 1,
-        textAlign: 'center',
+        alignItems: 'center',
         height: '100%',
         borderRightWidth: 1,
         borderRightColor: ColorApp.grayAD

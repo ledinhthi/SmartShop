@@ -8,9 +8,10 @@ import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { useStore } from "../stores/useStore";
+import { observer } from "mobx-react";
 
-
-export const Register = (props) => {
+export const Register = observer(({route, navigation}) => {
     const goBack = () => {
         props.navigation.goBack()
     }
@@ -55,7 +56,7 @@ export const Register = (props) => {
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     )
-}
+})
 const styles = StyleSheet.create({
     container: {
         flex: 1,
