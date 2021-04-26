@@ -69,7 +69,8 @@ export default module = {
     VIDEO_PAGE_KEY: 'VideoPage',
     LIST_PRODUCT_PAGE_KEY: 'ListProductPage',
     DETAIL_PRODUCT_PAGE_KEY: 'DetailProductPage',
-    ORDER_PAGE_KEY: 'OrderPage'
+    ORDER_PAGE_KEY: 'OrderPage',
+    MAIN_DASKBOARD: 'MainDashboard'
   },
 
   STACK_SCREEN_KEY: {

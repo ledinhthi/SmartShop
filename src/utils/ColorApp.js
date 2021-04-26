@@ -7,7 +7,7 @@ export default COLOR = {
     black1D: '#1D2129',
     white: '#FFFFFF',
     yellow: '#FFC400',
-    yellowFFED43: '#FFED43',
+    yellowFFED43: '#FFED4380',
     bgShadowPopup: 'rgba(112,112,112,0.7)',
     gray5d5d5d: '#5d5d5d',
     greenApp: '#16A2B8',

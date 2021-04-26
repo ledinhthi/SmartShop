@@ -13,7 +13,7 @@ import { observer } from "mobx-react";
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 
-export const DetailProduct = observer(({route, navigation}) => {
+export const DetailProduct = observer(({ route, navigation }) => {
     const [productInfor, setProductInfor] = React.useState(null);
 
     React.useEffect(() => {
@@ -75,7 +75,11 @@ export const DetailProduct = observer(({route, navigation}) => {
                             </Text>
                             {/* Status */}
                             <View style={{ alignSelf: 'flex-start', marginVertical: 20 }}>
-                                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(38), width: '100%', justifyContent: 'center', borderRadius: 3, backgroundColor: ColorApp.gray5d5d5d }}>
+                                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(38), width: '100%', justifyContent: 'center', borderRadius: 3, backgroundColor: ColorApp.gray5d5d5d }}
+                                    onPress={() => {
+                                        navigation.goBack();
+                                    }}
+                                >
                                     <Text style={[styles.textStyle, { paddingHorizontal: 2, color: ColorApp.white }]}>
                                         Thêm giỏ hàng
                                  </Text>

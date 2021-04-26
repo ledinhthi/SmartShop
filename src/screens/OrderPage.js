@@ -13,7 +13,11 @@ import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
 import { OrderInformation } from "../components/OrderInformation"
 import { OrderModal } from "../components/OrderModal"
-import Constants from "../utils/Constant";
+import { ListCityModal } from "../components/ListCityModal"
+import { ListDistrictModal } from "../components/ListDistrictModal"
+import { ListWardModal } from "../components/ListWardModal"
+import { ListPaymentMethod } from "../components/ListPaymentMethod"
+import Constants from "../utils/Constants";
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 
@@ -168,6 +172,7 @@ export const OrderPage = observer(({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <ScrollView
+                style={{ marginBottom: 80 }}
                 keyboardShouldPersistTaps='handled'
             >
                 <FlatList
@@ -194,25 +199,44 @@ export const OrderPage = observer(({ route, navigation }) => {
                 </FlatList>
                 {/* Thong tin Dat hang */}
                 <View style={{ width: '100%' }}>
-                    <OrderInformation navigation={navigation} 
-                    setIsShowListCityModal = {setIsShowListCityModal}
-                    setIsShowListDistrictModal = {setIsShowListDistrictModal}
-                    setIsShowListWardModal = {setIsShowListWardModal}
-                    setIsShowMethodPayment = {setIsShowMethodPayment}
-                    setIsShowOrderedInformation={setIsShowOrderedInformation}
+                    <OrderInformation navigation={navigation}
+                        setIsShowListCityModal={setIsShowListCityModal}
+                        setIsShowListDistrictModal={setIsShowListDistrictModal}
+                        setIsShowListWardModal={setIsShowListWardModal}
+                        setIsShowMethodPayment={setIsShowMethodPayment}
+                        setIsShowOrderedInformation={setIsShowOrderedInformation}
                     />
                 </View>
             </ScrollView>
-            {/* Is Show list city modal */}
-            {isShowListCityModal && <OrderModal setIsShowModal={setIsShowListCityModal} type={Constants.ORDER_MODAL_TYPE.LIST_CITY_MODAL} data={listCity} />}
-            {/* Show list district modal */}
-            {isShowListDistrictModal && <OrderModal setIsShowModal={setIsShowListDistrictModal} type={Constants.ORDER_MODAL_TYPE.LIST_DISTRICT_MODAL} data={listDistrict} />}
-            {/* Show list ward modal */}
-            {isShowListWardModal && <OrderModal setIsShowModal={setIsShowListWardModal} type={Constants.ORDER_MODAL_TYPE.LIST_WARD_MODAL} data={listWard} />}
-            {/* Show Method modal */}
-            {isShowMethodPayment && <OrderModal setIsShowModal={setIsShowMethodPayment} type={Constants.ORDER_MODAL_TYPE.PAYMENT_METHOD_MODAL} data={methodPayment} />}
             {/* Total Money */}
-            {isShowOrderedInformation && <OrderModal setIsShowModal={setIsShowOrderedInformation} type={Constants.ORDER_MODAL_TYPE.ORDERED_INFORMATION} />}
+            <View style={styles.totalMoney}>
+                {/* Money */}
+                <View style={{ alignItems: 'flex-end', marginRight: 8 }}>
+                    <Text style={[styles.textStyle, { fontWeight: 'bold' }]}>
+                        Tổng thanh toán
+                    </Text>
+                    <Text style={[styles.textStyle, { fontWeight: '400', color: ColorApp.orangeFD6545 }]}>
+                        0đ
+                    </Text>
+                </View>
+                {/*  */}
+                {/* Đặt hàng */}
+                <TouchableOpacity >
+                    <View style={styles.orderBtn}>
+                        <Text style={[styles.textStyle, { fontSize: PixelRatio.roundToNearestPixel(15), fontWeight: 'bold', color: ColorApp.white }]}>
+                            Đặt Hàng
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+            {/* Is Show list city modal */}
+            {isShowListCityModal && <ListCityModal setIsShowModal={setIsShowListCityModal} type={Constants.ORDER_MODAL_TYPE.LIST_CITY_MODAL} data={DATA} />}
+            {/* Show list district modal */}
+            {isShowListDistrictModal && <ListDistrictModal setIsShowModal={setIsShowListDistrictModal} type={Constants.ORDER_MODAL_TYPE.LIST_DISTRICT_MODAL} data={DATA} />}
+            {/* Show list ward modal */}
+            {isShowListWardModal && <ListWardModal setIsShowModal={setIsShowListWardModal} type={Constants.ORDER_MODAL_TYPE.LIST_WARD_MODAL} data={DATA} />}
+            {/* Show Method modal */}
+            {isShowMethodPayment && <ListPaymentMethod setIsShowModal={setIsShowMethodPayment} type={Constants.ORDER_MODAL_TYPE.PAYMENT_METHOD_MODAL} data={DATA} />}
         </View>
     )
 })
@@ -248,8 +272,26 @@ const styles = StyleSheet.create({
         height: '100%',
         borderRightWidth: 1,
         borderRightColor: ColorApp.grayAD
+    },
+    totalMoney: {
+        marginTop: 100,
+        zIndex: 9999,
+        position: 'absolute',
+        width: Constants.deviceW,
+        height: 70,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        bottom: 0,
+        backgroundColor: ColorApp.yellowFFED43
+    },
+    orderBtn: {
+        height: 50,
+        width: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: ColorApp.orangeFD6545,
     }
-
 })
 
 

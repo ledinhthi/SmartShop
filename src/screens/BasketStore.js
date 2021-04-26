@@ -11,7 +11,7 @@ import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
 import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
-import Constants from "../utils/Constant"
+import Constants from "../utils/Constants"
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 

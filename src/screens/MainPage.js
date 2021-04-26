@@ -12,10 +12,11 @@ import Swiper from 'react-native-swiper'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { color } from 'react-native-reanimated';
-import Constant from '../utils/Constant';
+import Constant from '../utils/Constants';
 import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
 import {ListDeviceModal} from "../components/ListDeviceModal"
+
 const DATA_SLIDE = [
     {
         id: 0,

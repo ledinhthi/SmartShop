@@ -16,10 +16,11 @@ import { Product } from "../screens/Product"
 import { BasketStore } from "../screens/BasketStore"
 import { Videos } from "../screens/Videos"
 import { OrderPage } from "../screens/OrderPage"
-import Constant from "../utils/Constant"
+import Constant from "../utils/Constants"
 import ColorApp from "../utils/ColorApp";
 
 const Drawer = createDrawerNavigator();
+const DashboardStack = createStackNavigator();
 
 const MainStack = createStackNavigator();
 
@@ -61,19 +62,12 @@ const BasketPageStack = (props) => {
         }
         name={Constant.PAGE_KEY.BASKET_DETAIL_PAGE_KEY} component={BasketStore}>
       </BasketStack.Screen>
-      {/* Show detail product */}
-      <BasketStack.Screen
-        options={
-          {
-            headerTitle: 'Đặt hàng'
-          }
-        }
-        name={Constant.PAGE_KEY.ORDER_PAGE_KEY} component={OrderPage}>
-      </BasketStack.Screen>
+
     </BasketStack.Navigator>
   )
 }
-export const Dashboard = () => {
+
+const SubDashboard = () => {
   return (
     <BottomTab.Navigator initialRouteName={Constant.PAGE_KEY.MAIN_PAGE_KEY}
       tabBarOptions={{
@@ -113,10 +107,8 @@ export const Dashboard = () => {
       })}
     >
       {/* Main page*/}
-      <BottomTab.Screen name={Constant.PAGE_KEY.MAIN_PAGE_KEY} component={MainPageStack}>
-      </BottomTab.Screen>
-      {/* Sản phẩm  */}
-      <BottomTab.Screen name={Constant.PAGE_KEY.PRODUCT_PAGE_KEY} component={Product}>
+      <BottomTab.Screen 
+      name={Constant.PAGE_KEY.MAIN_PAGE_KEY} component={MainPageStack}>
       </BottomTab.Screen>
       {/* Giỏ hàng */}
       <BottomTab.Screen
@@ -126,6 +118,29 @@ export const Dashboard = () => {
       <BottomTab.Screen name={Constant.PAGE_KEY.VIDEO_PAGE_KEY} component={Videos}>
       </BottomTab.Screen>
     </BottomTab.Navigator>
+  )
+}
+
+export const Dashboard = () => {
+  return (
+    <DashboardStack.Navigator>
+      <DashboardStack.Screen
+      options = {{
+        headerShown: false
+      }}
+        name={Constant.PAGE_KEY.MAIN_DASKBOARD}
+        component={SubDashboard}>
+
+      </DashboardStack.Screen>
+      <DashboardStack.Screen options={
+        {
+          headerTitle: 'Đặt hàng'
+        }
+      }
+        name={Constant.PAGE_KEY.ORDER_PAGE_KEY} component={OrderPage}>
+
+      </DashboardStack.Screen>
+    </DashboardStack.Navigator>
   )
 }
 

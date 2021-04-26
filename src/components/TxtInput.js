@@ -14,7 +14,12 @@ export const TxtInput = (props) => {
             <TextInput style={{ height: PixelRatio.roundToNearestPixel(48) }}
                 placeholder={props.placeholder || ""}
                 editable={props?.editable || true}
-                placeholderTextColor={ColorApp.gray}>
+                placeholderTextColor={ColorApp.gray}
+                
+                onChangeText={(textChanged) => {
+                    props?.setTextChanged(textChanged)
+                }}
+            >
             </TextInput>
         </View>
         // </View>

@@ -1,14 +1,11 @@
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import React from "react";
 import { ActivityIndicator, Alert, Animated, InteractionManager, Linking, View } from "react-native";
-import Communications from "react-native-communications";
 import ImagePicker from "react-native-image-picker";
 import { BallIndicator } from 'react-native-indicators';
-import i18n from "../translations/i18n";
-import LOCALIZE_KEYS from "../translations/LOCALIZE_KEYS";
 import Constants from "./Constants";
 import { getDateStr } from './TimeHelper';
-
+import ColorApp from '../utils/ColorApp'
 // based on iphone 5s's scale
 // Use iPhone8 1x as base size which is 375 x 667
 const baseWidth = 375;
@@ -19,29 +16,29 @@ const scaleHeight = Constants.deviceH / baseHeight;
 const scale = Math.min(scaleWidth, scaleHeight);
 export const scaledSize = (size) => Math.ceil((size * scale));
 
-export const setItemAsyncStorage = async (key, value) => {
-    let newKey = key.replace("-", "");
-    await AsyncStorage.setItem(newKey, value);
-}
+// export const setItemAsyncStorage = async (key, value) => {
+//     let newKey = key.replace("-", "");
+//     await AsyncStorage.setItem(newKey, value);
+// }
 
-export const getItemAsyncStorage = async (key) => {
-    let newKey = key.replace("-", "");
-    let data = await AsyncStorage.getItem(newKey);
+// export const getItemAsyncStorage = async (key) => {
+//     let newKey = key.replace("-", "");
+//     let data = await AsyncStorage.getItem(newKey);
 
-    return data;
-}
+//     return data;
+// }
 
-export const removeAllItemAsyncStorage = async () => {
-    let status = await AsyncStorage.clear();
+// export const removeAllItemAsyncStorage = async () => {
+//     let status = await AsyncStorage.clear();
 
-    return status;
-}
+//     return status;
+// }
 
-export const removeKeyItemAsyncStorage = async (key) => {
-    let status = await AsyncStorage.removeItem(key);
+// export const removeKeyItemAsyncStorage = async (key) => {
+//     let status = await AsyncStorage.removeItem(key);
 
-    return status;
-}
+//     return status;
+// }
 
 
 export const invalidOrEmptyString = (str) => {
@@ -54,7 +51,7 @@ export const showNoticeAlert = (
     message,
     cancelAble,
     callBack,
-    textButton = i18n.t(LOCALIZE_KEYS.close_title)
+    textButton = "CancelÏ",
 ) => {
     Alert.alert(
         title,
@@ -72,8 +69,8 @@ export const showNoticeAlert = (
 export const showConfirmAlert = (
     title,
     message,
-    confirmTitle = i18n.t(LOCALIZE_KEYS.confirm_title),
-    cancelTitle = i18n.t(LOCALIZE_KEYS.cancel_title),
+    confirmTitle = "Xác nhận",
+    cancelTitle = "Từ chối",
     cancelAble,
     callbackConfirm,
     callbackCancel
@@ -104,7 +101,7 @@ export const indicatorProgress = (props = {}) => (
         justifyContent: "center",
         backgroundColor: "transparent"
     }} >
-        <BallIndicator color={props.color || 'rgb(237,33,40)'} />
+        <BallIndicator color={props.color || ColorApp.yellow} />
     </View>
 );
 
@@ -203,11 +200,6 @@ export const openLink = (url) => {
     }
 }
 
-export const openPhoneCall = (phoneNumber) => {
-    if (phoneNumber && phoneNumber != '') {
-        Communications.phonecall(phoneNumber, true);
-    }
-}
 
 export const emailValidator = (e) => {
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(e);
@@ -220,7 +212,7 @@ export const phoneValidator = (phoneInput) => {
 
 //  validate code, double input
 export const codeValidator = (codeNumber) => {
-    var code  = /^\d{1,6}$/;
+    var code = /^\d{1,6}$/;
     return code.test(codeNumber);
 }
 
@@ -228,7 +220,7 @@ export const codeValidator = (codeNumber) => {
 export const passwordValidator = (password) => {
     var validation = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&])(?=.*[a-zA-Z]).{6,}$/;
     return validation.test(password);
-} 
+}
 // validate \d{1,8}.?(\d{1,8})?
 export const inputMeasureValidator = (inputMeasure) => {
     var measureValidator = /^(\d{1,8})[.]?(\d{1,8})?$/;

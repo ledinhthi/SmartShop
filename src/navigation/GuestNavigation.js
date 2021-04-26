@@ -4,7 +4,7 @@ import {
 } from "@react-navigation/stack";
 import { Login } from "../screens/Login"
 import { Register } from "../screens/Register"
-import Constant from "../utils/Constant"
+import Constant from "../utils/Constants"
 import * as React from "react";
 
 const Stack = createStackNavigator();

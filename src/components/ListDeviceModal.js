@@ -1,8 +1,54 @@
 import React from "react";
-import { Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native";
 import Animated, { Easing } from "react-native-reanimated";
 import ColorApp from "../utils/ColorApp";
-import Constants from "../utils/Constant";
+import Constants from "../utils/Constants";
+
+
+const DATA = [
+    {
+        id: 0,
+        city: "Ha noi1",
+        District: "Ba dinh",
+        Ward: "Thu le"
+    },
+    {
+        id: 0,
+        city: "Ha noi2",
+        District: "Ba dinh",
+        Ward: "Thu le"
+    },
+    {
+        id: 0,
+        city: "Ha noi3",
+        District: "Ba dinh",
+        Ward: "Thu le"
+    },
+    {
+        id: 0,
+        city: "Ha noi5",
+        District: "Ba dinh",
+        Ward: "Thu le"
+    },
+    {
+        id: 0,
+        city: "Ha noi5",
+        District: "Ba dinh",
+        Ward: "Thu le"
+    },
+    {
+        id: 0,
+        city: "Ha noi3",
+        District: "Ba dinh",
+        Ward: "Thu le"
+    },
+    {
+        id: 0,
+        city: "Ha noi4",
+        District: "Ba dinh",
+        Ward: "Thu le"
+    },
+]
 
 
 export const ListDeviceModal = (props) => {
@@ -70,10 +116,31 @@ export const ListDeviceModal = (props) => {
                 ]
             }]}
             >
+                <View style={{ flex: 1, padding: 20 }}>
+                    <FlatList
+                        // style={{ flexGrow: 0, minHeight: 70, maxHeight: 400, maxWidth: 300, backgroundColor: ColorApp.white }}
+                        data={DATA}
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            alignItems: 'center',
+                            paddingVertical: 20
+                        }}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <TouchableOpacity onPress={() => {
+                                }}>
+                                    <View style={{ height: 40, width: 150, marginHorizontal: 30,justifyContent: 'center', marginTop: 10 }}>
+                                        <Text style={styles.textStyle}>
+                                            {item.District}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }}
+                    >
 
-            <View style = {{backgroundColor: ColorApp.red}}>
-
-            </View>
+                    </FlatList>
+                </View>
             </Animated.View>
         </View >
     )

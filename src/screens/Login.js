@@ -7,10 +7,21 @@ import * as data from "../models/index"
 import ColorApp from '../utils/ColorApp'
 import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
-import Constant from '../utils/Constant'
+import Constant from '../utils/Constants'
 import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
-export const Login = observer(({route, navigation}) => {
+import * as Util from "../utils/Util";
+
+export const Login = observer(({ route, navigation }) => {
+    const { AuthStore } = useStore();
+    let username = React.useRef("").current;
+    let password = React.useRef("").current;
+    const setUserName = (usernameInput) => {
+        username = usernameInput;
+    }
+    const setPassword = (passwordInput) => {
+        password = passwordInput;
+    }
     const onRegisterBtn = () => {
         navigation.navigate(Constant.PAGE_KEY.REGISTER_PAGE_KEY)
     }
@@ -25,20 +36,20 @@ export const Login = observer(({route, navigation}) => {
                 >
                 </Image>
                 {/* Username Input */}
-                <TxtInput txtInput={[styles.input, { marginTop: 50 }]} placeholder={"Nhập tài khoản"} title={"Tài khoản"}>
+                <TxtInput setTextChanged={setUserName} txtInput={[styles.input, { marginTop: 50 }]} placeholder={"Nhập tài khoản"} title={"Tài khoản"}>
                 </TxtInput>
                 {/* Password Input */}
-                <TxtInput txtInput={[styles.input]} placeholder={"Nhập mật khẩu"} title={"Mật khẩu"}>
+                <TxtInput setTextChanged={setPassword} txtInput={[styles.input]} placeholder={"Nhập mật khẩu"} title={"Mật khẩu"}>
                 </TxtInput>
                 {/* Forgot, register */}
-                <View style={{width: '80%', flexDirection: 'row', marginTop: 10}}>
-                    <TouchableOpacity style={{flex: 1, alignSelf: 'flex-start' }}>
+                <View style={{ width: '80%', flexDirection: 'row', marginTop: 10 }}>
+                    <TouchableOpacity style={{ flex: 1, alignSelf: 'flex-start' }}>
                         <Text style={styles.text}>
                             Quên mật khẩu?
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flex: 1, alignItems: 'flex-end' }}
-                        onPress ={onRegisterBtn}
+                    <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }}
+                        onPress={onRegisterBtn}
                     >
                         <Text style={[styles.text]}>
                             Đăng ký
@@ -46,8 +57,16 @@ export const Login = observer(({route, navigation}) => {
                     </TouchableOpacity>
                 </View>
 
-                <ActionBtn title={"Đăng nhập"} actionBtn={styles.loginBtn} />
+                <ActionBtn title={"Đăng nhập"} actionBtn={styles.loginBtn}
+                    action={() => {
+                        console.log("username", username, "password", password)
+                        AuthStore.login(username, password)
+                    }}
+                />
+                {/* Show loading */}
+                {AuthStore.isLoading && <Util.indicatorProgress />}
             </KeyboardAvoidingView>
+
         </TouchableWithoutFeedback>
     )
 })

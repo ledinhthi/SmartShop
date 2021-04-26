@@ -1,12 +1,14 @@
-
 import React from "react";
 import { Modal, PixelRatio, StyleSheet, Text, TouchableOpacity, View, ScrollView, FlatList } from "react-native";
 import ColorApp from "../utils/ColorApp";
 import Constants from "../utils/Constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-export const OrderModal = (props) => {
-
+export const ListWardModal = (props) => {
+    let chosenItem = React.useRef().current;
+    const setChosenItem = (chosenItem) => {
+        chosenItem = chosenItem;
+    }
     return (
         <View style={[styles.modalView, { ...StyleSheet.absoluteFillObject }]}>
             <Modal
@@ -17,40 +19,38 @@ export const OrderModal = (props) => {
                     Alert.alert("Modal has been closed.");
                 }}
             >
-
-                {props?.type != Constants.ORDER_MODAL_TYPE.ORDERED_INFORMATION
-                    ?
-                    <View style={styles.inner}>
-                        {/* Excape */}
-                        <FlatList
-                            style={{flex: 1, flexGrow: 0, minHeight: 70, maxWidth: 300, alignItems: 'center', backgroundColor: ColorApp.white }}
-                            data={props.data}
-                            contentContainerStyle={{
-                                flexGrow: 1,
-                            }}
-                            renderItem={({ item, index }) => {
-                                return (
-                                    <TouchableOpacity onPress={() => {
-                                        props.setIsShowModal(false);
-                                    }}>
-                                        <View style={{ height: 50, width: 300, borderWidth: 1, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                                            <Text style={styles.textStyle}>
-                                                {item.district}
-                                            </Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                )
-                            }}
-                        >
-                        </FlatList>
-                        
+                <View style={styles.inner}>
+                    {/* Excape */}
+                    <View >
+                        <Text style={styles.textStyle, { color: ColorApp.white }}>
+                            DANH SÁCH PHƯỜNG
+                        </Text>
                     </View>
-
-                    :
-                    <View style={{ width: 400, height: 400 }}>
-
-                    </View>
-                }
+                    <FlatList
+                        style={{ flexGrow: 0, minHeight: 70, maxHeight: 400, maxWidth: 300, backgroundColor: ColorApp.white }}
+                        data={props.data}
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            alignItems: 'center',
+                            paddingVertical: 20
+                        }}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <TouchableOpacity onPress={() => {
+                                    props.setIsShowModal(false);
+                                    setChosenItem(item)
+                                }}>
+                                    <View style={{ height: 40, width: 250, marginHorizontal: 30, borderWidth: 1, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                                        <Text style={styles.textStyle}>
+                                            {item.District}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        }}
+                    >
+                    </FlatList>
+                </View>
             </Modal>
         </View>
     )
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     textStyle: {
         fontFamily: Constants.FONT_NAME.NOTO_SANDS_REGULAR,
         fontWeight: '500',
-        color: ColorApp.blue597CEB,
+        color: ColorApp.black,
         fontSize: PixelRatio.roundToNearestPixel(16)
     },
     alertContent: {

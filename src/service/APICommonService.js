@@ -96,11 +96,7 @@ class APICommonService {
   };
 
   login = async (username, password) => {
-    let params = {};
-    params[API_KEY.USER_NAME_KEY] = username;
-    params[API_KEY.USER_PASSWORD_KEY] = password;
-
-    return this.axioPost(API_URL.LOGIN, params);
+    return this.axioGet(API_URL.CUSTOMER);
   };
 
   checkExistingUserName = async (userName) => {
@@ -111,53 +107,7 @@ class APICommonService {
   };
 
   register = async (params = null) => {
-    // return this.axioPost(API_URL.REGISTER, params);
-    /*
-      "name": "nguyennk",
-        "password": "123123",
-        "password_confirmation": "123123",
-        "type": 1,
-        "profile_type": 1,
-        "nickname": "nguyen",
-        "status": "Hello",
-        "avatar_photo": binary
-    */
-    let url = `${API_URL.SERVER_HOST}${API_URL.REGISTER}`;
-    let formdata = new FormData();
-    formdata.append("name", params.name);
-    formdata.append("password", params.password);
-    formdata.append("password_confirmation", params.password_confirmation);
-    formdata.append("profile_type", params.profile_type);
-    formdata.append("type", params.type);
-    formdata.append("nickname", params.nickname);
-    formdata.append("status", params.status);
-
-    if (params.avatar_photo) {
-      formdata.append(`avatar_photo`, {
-        uri: params.avatar_photo,
-        type: "image/jpeg", // or use other libs to detect mimetype...
-        name: `profile.jpg`,
-      });
-    }
-
-    return fetch(url, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-      },
-      body: formdata,
-    })
-      .then((response) => {
-        let status = response.status;
-        return response.json().then((responseJson) => {
-          let sJson = { ...responseJson, statusRequest: status };
-          return sJson;
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return this.axioPost(API_URL.CUSTOMER, params);
   };
 
   forgotPassword = async (email) => {
@@ -165,7 +115,7 @@ class APICommonService {
   };
 
   getCelebsData = async (type) => {
-    let params ={type: type};
+    let params = { type: type };
     return this.axioGet(API_URL.GET_LIST_USERS, params);
   };
 
@@ -263,39 +213,39 @@ class APICommonService {
         "status": "Hello",
         "avatar_photo": binary
     */
-   let url = `${API_URL.SERVER_HOST}${API_URL.UPDATE_PROFILE}`;
-   let formdata = new FormData();
-   formdata.append("nickname", params.nickname);
-   formdata.append("status", params.status);
+    let url = `${API_URL.SERVER_HOST}${API_URL.UPDATE_PROFILE}`;
+    let formdata = new FormData();
+    formdata.append("nickname", params.nickname);
+    formdata.append("status", params.status);
 
-   if (params.avatar_photo) {
-     formdata.append(`avatar_photo`, {
-       uri: params.avatar_photo,
-       type: "image/jpeg", // or use other libs to detect mimetype...
-       name: `profile.jpg`,
-     });
-   }
-   console.log('FORM', formdata)
+    if (params.avatar_photo) {
+      formdata.append(`avatar_photo`, {
+        uri: params.avatar_photo,
+        type: "image/jpeg", // or use other libs to detect mimetype...
+        name: `profile.jpg`,
+      });
+    }
+    console.log('FORM', formdata)
 
-   return fetch(url, {
-     method: "POST",
-     headers: {
-       Accept: "application/json",
-       "Content-Type": "multipart/form-data",
-       "Authorization": `Bearer ${accessToken}`
-     },
-     body: formdata,
-   })
-     .then((response) => {
-       let status = response.status;
-       return response.json().then((responseJson) => {
-         let sJson = { ...responseJson, statusRequest: status };
-         return sJson;
-       });
-     })
-     .catch((err) => {
-       console.log(err);
-     });
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      body: formdata,
+    })
+      .then((response) => {
+        let status = response.status;
+        return response.json().then((responseJson) => {
+          let sJson = { ...responseJson, statusRequest: status };
+          return sJson;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   updateFCMToken = async (userId, userToken, fcmToken) => {

@@ -1,9 +1,8 @@
 import { action, makeAutoObservable, observable } from "mobx";
-import APICommonService from "../services/APICommonService";
-import i18n from "../translations/i18n";
-import LOCALIZE_KEYS from "../translations/LOCALIZE_KEYS";
+import APICommonService from "../service/APICommonService";
 import Constants from "../utils/Constants";
-import { removeKeyItemAsyncStorage, setItemAsyncStorage } from "../utils/Util";
+import md5 from 'md5'
+// import { removeKeyItemAsyncStorage, setItemAsyncStorage } from "../utils/Util";
 
 class AuthStore {
   constructor() {
@@ -56,14 +55,7 @@ class AuthStore {
   }
 
   @action setLoginInfo = (info) => {
-    if (info) {
-      this.userToken = info.access_token;
-
-      // Update Bearer toke
-      APICommonService.updateBearerToken(this.userToken)
-
-      this.userInfo = info.user;
-    }
+    this.userInfo = info;
   };
 
   @action updateProfileInfo = (info) => {
@@ -85,7 +77,7 @@ class AuthStore {
     this.registeredUserInfo = info;
   }
 
-  @action reset = () => {};
+  @action reset = () => { };
 
   @action logout = () => {
     // OFF HomeScreen flag when success logged-out
@@ -94,9 +86,9 @@ class AuthStore {
     // Update Bearer toke
     APICommonService.updateBearerToken(null)
 
-    // Reset data
-    removeKeyItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.USER_NAME);
-    removeKeyItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.PASSWORD);
+    // // Reset data
+    // removeKeyItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.USER_NAME);
+    // removeKeyItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.PASSWORD);
     this.userToken = null;
     this.userInfo = null;
   };
@@ -107,24 +99,24 @@ class AuthStore {
   };
 
   @action login = (username, pass) => {
+    let currentUsername = username;
+    let currentPass = pass;
     this.setLoading(true);
     this.setErrorLogin(null);
-    APICommonService.login(username, pass)
+    // var md5 = require('md5');
+    APICommonService.login()
       .then((resp) => {
-        /*
-        {"data": {"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8zLjM2LjE1NC4zOjgxMDBcL2FwaVwvdjFcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjE4MDQ2OTIzLCJleHAiOjE2MTgwNTA1MjMsIm5iZiI6MTYxODA0NjkyMywianRpIjoibXRTY3M4WngyUk1CU2NLQyIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.jZC70G01_YlnnpdxsW_R2LoygmBjLaSw3tx8Ay3AVsc", "token_type": "Bearer", "user": {"created_at": "2021-04-05T07:17:38.000000Z", "email": "", "email_verified_at": null, "id": 1, "is_receive_notification": 1, "last_visited": null, "name": "nguyennk", "type": 1, "updated_at": "2021-04-05T07:17:38.000000Z"}}, "message": "Login success.", "success": true}
-         */
         console.log("Resp", resp);
-        if (resp.success && resp.data) {
-          this.setLoginInfo(resp.data);
-
-          // Save local to remember login
-          setItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.USER_NAME, username);
-          setItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.PASSWORD, pass);
-        } else {
-          this.setErrorLogin(
-            resp.data || i18n.t(LOCALIZE_KEYS.internal_err_msg)
-          );
+        let listUser = resp;
+        if (listUser) {
+          for (let idxUser in listUser) {
+            let convertedMd5 = md5(currentPass);
+            if ((listUser[idxUser]?.customer_email == currentUsername) && (listUser[idxUser]?.customer_password == convertedMd5)) {
+              console.log("Onssuccess")
+              this.setLoginInfo(listUser[idxUser]);
+              break;
+            }
+          }
         }
       })
       .catch((err) => {
@@ -144,19 +136,7 @@ class AuthStore {
         {"data": {"created_at": "2021-04-11T15:16:41.000000Z", "email": "", "id": 2, "name": "son7kim", "type": 1, "updated_at": "2021-04-11T15:16:41.000000Z"}, "message": "Register success.", "success": true}
          */
         console.log("Resp", resp);
-        if (resp.success && resp.data) {
-          // Keep register info to navigate dashboard after review permission page
-          this.setRegisteredUserInfo(resp.data);
-
-          // Save local to remember login
-          setItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.USER_NAME, params.name);
-          setItemAsyncStorage(Constants.ASYNC_STORAGE_KEY.PASSWORD, params.password);
-          this.setSuccessRegister(resp.data);
-        } else {
-          this.setErrorRegister(
-            resp.message || i18n.t(LOCALIZE_KEYS.internal_err_msg)
-          );
-        }
+        this.setRegisteredUserInfo(resp);
       })
       .catch((err) => {
         this.setErrorRegister(err);
@@ -165,7 +145,7 @@ class AuthStore {
         this.setLoading(false);
       });
   };
- 
+
   @action checkExistingUserName = (userName) => {
     this.setLoading(true);
     this.setRespCheckExistingName(null);

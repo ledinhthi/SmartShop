@@ -1,6 +1,6 @@
 
 import { differenceInDays } from "date-fns";
-import differenceInSeconds from "date-fns/differenceInSeconds";
+// import differenceInSeconds from "date-fns/differenceInSeconds";
 import format from "date-fns/format";
 import moment from "moment";
 import *as Util from '../utils/Util';
@@ -26,9 +26,9 @@ export const convertTimeStampToStringDate = (timeStamp, format) => {
     return moment.unix(timeStamp / 1000).format(format);
 }
 
-export const getDifference = (date) => {
-    return differenceInSeconds(new Date(), date);
-}
+// export const getDifference = (date) => {
+//     return differenceInSeconds(new Date(), date);
+// }
 
 export const getDifferenceDays = (left, right) => {
     return differenceInDays(left * 1000, right * 1000) + 1;

@@ -14,12 +14,21 @@ import {
 import { GuestStack } from './src/navigation/GuestNavigation'
 import { Dashboard } from './src/navigation/AppNavigation'
 import { NavigationContainer } from '@react-navigation/native'
-const App = () => {
+import { observer } from 'mobx-react';
+import { useStore } from './src/stores/useStore';
+const App = observer(() => {
+  const { AuthStore } = useStore();
+  React.useEffect(async () => {
+    console.log("AuthStore.userInfo", AuthStore.userInfo)
+  }, [AuthStore.userInfo])
   return (
     <NavigationContainer>
-      <Dashboard />
+      {AuthStore.userInfo
+        ? <Dashboard />
+        : <GuestStack />
+      }
     </NavigationContainer>
   );
-};
+});
 
 export default App;

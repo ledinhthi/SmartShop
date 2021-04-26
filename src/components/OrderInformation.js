@@ -2,7 +2,7 @@ import React from "react";
 import { Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { Easing } from "react-native-reanimated";
 import ColorApp from "../utils/ColorApp";
-import Constants from "../utils/Constant";
+import Constants from "../utils/Constants";
 import { TxtInput } from "./TxtInput"
 import { TextInput } from "react-native-gesture-handler";
 import { OrderModal } from "../components/OrderModal"
@@ -91,32 +91,7 @@ export const OrderInformation = (props) => {
                         </Text>
                     </TouchableOpacity>
                 </View>
-                {/* Xác nhận đơn hàng */}
-                <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity style={{
-                        height: PixelRatio.roundToNearestPixel(35), width: 150,
-                        paddingHorizontal: 2,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 3, backgroundColor: ColorApp.yellow
-                    }}
-                        onPress={() => {
-                            // props.navigation.navigate(Constants.PAGE_KEY.ORDER_PAGE_KEY);
-                        }}
-                    >
-                        <Image style={{ height: 15, width: 15, tintColor: ColorApp.white }}
-                            resizeMode='contain'
-                            source={require("../../images/shopping-cart.png")}
-                        >
-                        </Image>
-                        <Text style={[styles.textStyle, { fontSize: 11, marginLeft: 4, color: ColorApp.white }]}>
-                            Xác nhận đơn hàng
-                        </Text>
-                    </TouchableOpacity>
-                </View>
             </View>
-         
         </View >
     )
 }
@@ -134,4 +109,5 @@ const styles = StyleSheet.create({
     textStyle: {
         fontSize: PixelRatio.roundToNearestPixel(14),
     },
+
 })

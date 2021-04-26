@@ -9,7 +9,7 @@ export const ActionBtn = (props) => {
     return (
         <TouchableOpacity style={[styles.container, props.actionBtn]}
             onPress={() => {
-                console.log("OnActionBtn")
+                props?.action();
             }}
         >
             <Text style={styles.textStyle}>
