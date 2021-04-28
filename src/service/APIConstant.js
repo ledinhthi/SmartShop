@@ -7,6 +7,7 @@ export const API_URL = {
     BRAND: "brand",
     CATERGORY: "category",
     PRODUCT: "product",
+    SLIDER: "slider",
     COUPON: "coupon",
     GALEERY: "gallery",
     ORDER: "order",

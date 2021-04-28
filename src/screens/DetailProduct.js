@@ -10,6 +10,8 @@ import { ActionBtn } from '../components/ActionBtn'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
+import Constant from '../utils/Constants';
+import APICommonService from '../service/APICommonService'
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 
@@ -18,8 +20,34 @@ export const DetailProduct = observer(({ route, navigation }) => {
 
     React.useEffect(() => {
         let product = route?.params?.product;
+        APICommonService.getBrandOfProduct(product.brand_id)
+            .then(response => {
+                console.log("getBrandOfProduct response", response)
+                productInfor['brand_desc'] = response.brand_desc;
+            })
+            .catch(error => {
+                console.log("error", error)
+            })
+            .finally(() => {
+                console.log("finally")
+            });
+        APICommonService.getCategoryProduct(product.category_id)
+            .then(response => {
+                console.log("getCategoryProduct Response", response)
+                productInfor['category_desc'] = response.category_desc;
+            })
+            .catch(error => {
+                console.log("error", error)
+            })
+            .finally(() => {
+                console.log("finally")
+            });
+
         console.log("Product", product)
         setProductInfor(product);
+        const unsubscribeListener = navigation.addListener("focus", () => {
+            // ChatStore.getListGroupChannel();
+        });
         return () => {
             console.log("UnMount")
         }
@@ -31,7 +59,8 @@ export const DetailProduct = observer(({ route, navigation }) => {
                     {/* Image product  */}
                     <View style={styles.imageStyle}>
                         <Image style={{ width: '100%', height: '100%' }}
-                            source={{ uri: productInfor?.url || null }}
+                            source={{ uri: `${Constant.PREFIX_URL.PRODUCT + productInfor?.product_image}` }}
+                            resizeMode={'contain'}
                         >
                         </Image>
                     </View>
@@ -39,39 +68,26 @@ export const DetailProduct = observer(({ route, navigation }) => {
                     <View style={styles.contentStyle}>
                         {/* Samsung galaxy 20 */}
                         <View >
-                            <Text style={[styles.textStyle, { fontWeight: 'bold', color: 'black', fontSize: PixelRatio.roundToNearestPixel(20) }]}>
-                                {productInfor.phoneName}
+                            <Text style={[styles.textStyle, { fontWeight: 'bold', color: 'black', fontSize: PixelRatio.roundToNearestPixel(20), textAlign: 'center' }]}
+                            >
+                                {productInfor?.product_name}
                             </Text>
                         </View>
                         {/* Ma Id */}
                         <View>
-                            <Text style={[styles.textStyle, { color: 'black', fontSize: PixelRatio.roundToNearestPixel(20) }]}>
-                                {productInfor.price}
+                            <Text style={[styles.textStyle, { color: ColorApp.gray8A8A8A, fontSize: PixelRatio.roundToNearestPixel(20), fontWeight: 'bold' }]}>
+                                {productInfor?.product_price} VND
                             </Text>
                         </View>
                         {/* 250000,  so luong */}
                         <View style={{ marginTop: 10, marginHorizontal: '10%' }}>
                             <Text style={[styles.textStyle, { color: 'black', fontSize: PixelRatio.roundToNearestPixel(20) }]}>
-                                Tình trạng: Còn hàng
-                                Điều kiện: Mơi 100%
-                                Số lượng kho còn: 12
-                                Thương hiệu: Apple
-                                Danh mục: Điện thoại
-                                Số lượng kho còn: 12
-                                Thương hiệu: Apple
-                                Danh mục: Điện thoại
-                                Số lượng kho còn: 12
-                                Thương hiệu: Apple
-                                Danh mục: Điện thoại
-                                Số lượng kho còn: 12
-                                Thương hiệu: Apple
-                                Danh mục: Điện thoại
-                                Số lượng kho còn: 12
-                                Thương hiệu: Apple
-                                Danh mục: Điện thoại
-                                Số lượng kho còn: 12
-                                Thương hiệu: Apple
-                                Danh mục: Điện thoại
+                                Tình trạng: Còn hàng  {'\n'}
+                                Điều kiện: Mơi 100% {'\n'}
+                                Số lượng kho còn: {productInfor?.product_quantity}  {'\n'}
+                                Thương hiệu: {productInfor?.brand_desc}  {'\n'}
+                                Danh mục: {productInfor?.category_desc}
+
                             </Text>
                             {/* Status */}
                             <View style={{ alignSelf: 'flex-start', marginVertical: 20 }}>
@@ -104,7 +120,8 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     contentStyle: {
-        marginTop: 10,
+        marginTop: 20,
+        paddingHorizontal: '5%',
         justifyContent: 'center',
         alignItems: 'center'
     },

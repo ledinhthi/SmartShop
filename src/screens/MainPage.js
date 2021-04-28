@@ -15,7 +15,8 @@ import { color } from 'react-native-reanimated';
 import Constant from '../utils/Constants';
 import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
-import {ListDeviceModal} from "../components/ListDeviceModal"
+import { ListDeviceModal } from "../components/ListDeviceModal"
+import * as Util from "../utils/Util";
 
 const DATA_SLIDE = [
     {
@@ -93,8 +94,8 @@ const ProductItem = (props) => {
                 props.navigation.navigate(Constant.PAGE_KEY.DETAIL_PRODUCT_PAGE_KEY, { product: props.item })
             }}>
                 <Image style={{ height: 100, width: '100%' }}
-                    resizeMode='cover'
-                    source={{ uri: props.item.url }}
+                    resizeMode='contain'
+                    source={{ uri: `${Constant.PREFIX_URL.PRODUCT + props.item?.product_image}` }}
                 >
                 </Image>
             </TouchableOpacity>
@@ -104,7 +105,7 @@ const ProductItem = (props) => {
                     ellipsizeMode='tail'
                     numberOfLines={2}
                 >
-                    DADADADADADA
+                    {props.item?.product_price} VND
                 </Text>
             </View>
             {/* Name */}
@@ -113,7 +114,7 @@ const ProductItem = (props) => {
                     ellipsizeMode='tail'
                     numberOfLines={2}
                 >
-                    Iphone X cu dasdsadsadsadsadsdsadsadasdasdasdasdsadsadsadsa
+                    {props.item?.product_name}
                 </Text>
             </View>
             {/* Basket, fastCheck */}
@@ -129,7 +130,11 @@ const ProductItem = (props) => {
                         </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(25), width: 80, marginLeft: 4, paddingHorizontal: 2, flexDirection: 'row', alignItems: 'center', borderRadius: 3, backgroundColor: ColorApp.gray5d5d5d }}>
+                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(25), width: 80, marginLeft: 4, paddingHorizontal: 2, flexDirection: 'row', alignItems: 'center', borderRadius: 3, backgroundColor: ColorApp.gray5d5d5d }}
+                    onPress={() => {
+                        props.navigation.navigate(Constant.PAGE_KEY.LOOK_OVER_PAGE_KEY, { product: props.item })
+                    }}
+                >
                     <Image style={{ height: 15, width: 15, tintColor: ColorApp.white }}
                         resizeMode='contain'
                         source={require("../../images/visibility.png")}
@@ -145,95 +150,108 @@ const ProductItem = (props) => {
 }
 
 export const MainPage = observer(({ route, navigation }) => {
+    const { ProductStore } = useStore();
     const [isShowListBranch, setIsShowListBranch] = React.useState(false);
-
+    React.useEffect(async () => {
+        console.log("Mount");
+        await ProductStore.getListSliderAds();
+        await ProductStore.getListProduct();
+    }, [])
     return (
-        <View style={styles.container}>
-            {/* Logo */}
-            <Image style={styles.logo}
-                source={{ uri: "http://smartshopnew.tk/public/frontend/images/logo.jpg" }}
-            >
-            </Image>
-            {/* Header  */}
-            <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => {
-                        setIsShowListBranch(true)
-                    }}
+        ProductStore.listProduct ?
+            <View style={styles.container}>
+                {/* Logo */}
+                <Image style={styles.logo}
+                    source={{ uri: "http://smartshopnew.tk/public/frontend/images/logo.jpg" }}
                 >
-                    <Image style={{ width: 25, height: 25 }}
-                        source={require("../../images/menu-button-of-three-horizontal-lines.png")}
-                        resizeMode={'cover'}
+                </Image>
+                {/* Header  */}
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setIsShowListBranch(true)
+                        }}
                     >
-                    </Image>
-                </TouchableOpacity>
-                {/* Basket */}
-                <TouchableOpacity
-                    onPress={() => {
-                        navigation.navigate(Constant.PAGE_KEY.BASKET_PAGE_KEY)
-                    }}
-                >
-                    <Image style={{ width: 25, height: 25, marginLeft: 20 }}
-                        source={require("../../images/shopping-cart.png")}
-                        resizeMode={'cover'}
+                        <Image style={{ width: 25, height: 25 }}
+                            source={require("../../images/menu-button-of-three-horizontal-lines.png")}
+                            resizeMode={'cover'}
+                        >
+                        </Image>
+                    </TouchableOpacity>
+                    {/* Basket */}
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate(Constant.PAGE_KEY.BASKET_PAGE_KEY)
+                        }}
                     >
-                    </Image>
-                </TouchableOpacity>
-                {/* Search */}
-                <TextInput style={{ marginLeft: 30, maxHeight: 38, flexGrow: 1, borderWidth: 1, borderRadius: 3, borderColor: ColorApp.gray5d5d5d }}
-                    placeholder={'Tìm kiếm'}
-                >
-                </TextInput>
-            </View>
-            <ScrollView>
-                {/* Advertiserment */}
-                <View style={{ height: 150, marginTop: 10 }}>
-                    <Swiper style={styles.wrapper}
-                        autoplay={true}
-                        dotStyle={{ marginTop: 120 }}
-                        activeDotStyle={{ marginTop: 120 }}
+                        <Image style={{ width: 25, height: 25, marginLeft: 20 }}
+                            source={require("../../images/shopping-cart.png")}
+                            resizeMode={'cover'}
+                        >
+                        </Image>
+                    </TouchableOpacity>
+                    {/* Search */}
+                    <TextInput style={{ marginLeft: 30, maxHeight: 38, flexGrow: 1, borderWidth: 1, borderRadius: 3, borderColor: ColorApp.gray5d5d5d }}
+                        placeholder={'Tìm kiếm'}
                     >
-                        {
-                            DATA_SLIDE.map(item => {
-                                return (
-                                    <Image style={styles.imageSlider}
-                                        source={{ uri: item.url }}
-                                        resizeMode={'cover'}
-                                    >
-                                    </Image>
-                                )
-                            })
-                        }
-                    </Swiper>
+                    </TextInput>
                 </View>
-                {/* Content  */}
-                <FlatList
-                    columnWrapperStyle={{ justifyContent: 'space-between' }}
-                    scrollEnabled={true}
-                    showsVerticalScrollIndicator={true}
-                    style={{ marginTop: 20, flex: 1 }}
-                    data={DATA_SLIDE}
-                    renderItem={({ item, index }) => {
-                        return (
-                            <ProductItem item={item} navigation={navigation} />
-                        )
-                    }}
-                    numColumns={2}
-                    bounces={true}
-                    ItemSeparatorComponent={() => {
-                        return (
-                            <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
+                <ScrollView>
+                    {/* Advertiserment */}
+                    <View style={{ height: 150, marginTop: 10 }}>
+                        <Swiper style={styles.wrapper}
+                            autoplay={true}
+                            dotStyle={{ marginTop: 120 }}
+                            activeDotStyle={{ marginTop: 120 }}
+                        >
+                            {
+                                ProductStore.listImageSliderAds?.map((item, index) => {
+                                    return (
+                                        <Image key={index} style={styles.imageSlider}
+                                            source={{ uri: `${Constant.PREFIX_URL.SLIDER + item?.slider_image}` }}
+                                            resizeMode={'cover'}
+                                        >
+                                        </Image>
+                                    )
+                                })
+                            }
+                        </Swiper>
+                    </View>
+                    {/* Content  */}
+                    <FlatList
+                        columnWrapperStyle={{ justifyContent: 'space-between' }}
+                        scrollEnabled={true}
+                        showsVerticalScrollIndicator={true}
+                        style={{ marginTop: 20, flex: 1 }}
+                        data={ProductStore.listProduct || null}
+                        // keyExtractor={(item, index) => `${item?.product_id} + ${index}`}
+                        renderItem={({ item, index }) => {
+                            return (
+                                <ProductItem item={item} navigation={navigation} />
+                            )
+                        }}
+                        numColumns={2}
+                        bounces={true}
+                        ItemSeparatorComponent={() => {
+                            return (
+                                <View style={{ marginHorizontal: 10, marginVertical: 5 }}>
 
-                            </View>
-                        )
-                    }}
+                                </View>
+                            )
+                        }}
 
-                    contentContainerStyle={{ paddingHorizontal: 10 }}
-                >
-                </FlatList>
-            </ScrollView>
-            {isShowListBranch && <ListDeviceModal  isShowSliding= {isShowListBranch} setIsShowSliding ={setIsShowListBranch}/>}
-        </View>
+                        contentContainerStyle={{ paddingHorizontal: 10 }}
+                    >
+                    </FlatList>
+                </ScrollView>
+                {isShowListBranch && <ListDeviceModal isShowSliding={isShowListBranch} setIsShowSliding={setIsShowListBranch} />}
+                {/* Show loading */}
+                {ProductStore.isLoading && <Util.indicatorProgress />}
+
+            </View>
+
+            : <View>
+            </View>
     )
 })
 const styles = StyleSheet.create({

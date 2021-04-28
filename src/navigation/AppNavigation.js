@@ -12,6 +12,7 @@ import * as React from "react";
 import { Image, View } from 'react-native'
 import { MainPage } from "../screens/MainPage"
 import { DetailProduct } from "../screens/DetailProduct"
+import { FastCheckProduct } from "../screens/FastCheckProduct"
 import { Product } from "../screens/Product"
 import { BasketStore } from "../screens/BasketStore"
 import { Videos } from "../screens/Videos"
@@ -46,6 +47,15 @@ const MainPageStack = (props) => {
         }
         name={Constant.PAGE_KEY.DETAIL_PRODUCT_PAGE_KEY} component={DetailProduct}>
       </MainStack.Screen>
+        {/* Show detail product */}
+        <MainStack.Screen
+        options={
+          {
+            headerTitle: 'Xem nhanh'
+          }
+        }
+        name={Constant.PAGE_KEY.LOOK_OVER_PAGE_KEY} component={FastCheckProduct}>
+      </MainStack.Screen>
     </MainStack.Navigator>
   )
 }
@@ -74,6 +84,7 @@ const SubDashboard = () => {
         activeTintColor: ColorApp.yellow,
         tabStyle: { paddingVertical: 4 },
       }}
+      lazy = {true}
       screenOptions={({ route }) => ({
         // tabBarVisible: MainStore.isHideBottomBar,
         tabBarIcon: ({ focused }) => {

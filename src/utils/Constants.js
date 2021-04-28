@@ -69,6 +69,7 @@ export default module = {
     VIDEO_PAGE_KEY: 'VideoPage',
     LIST_PRODUCT_PAGE_KEY: 'ListProductPage',
     DETAIL_PRODUCT_PAGE_KEY: 'DetailProductPage',
+    LOOK_OVER_PAGE_KEY: 'Xem nhanh',
     ORDER_PAGE_KEY: 'OrderPage',
     MAIN_DASKBOARD: 'MainDashboard'
   },
@@ -144,8 +145,11 @@ export default module = {
     LIST_WARD_MODAL: 2,
     PAYMENT_METHOD_MODAL: 3,
     ORDERED_INFORMATION: 4
+  },
+  PREFIX_URL: {
+    PRODUCT: "http://smartshopnew.tk/public/uploads/product/",
+    SLIDER: "http://smartshopnew.tk/public/uploads/slider/"
   }
-
 
 }
 

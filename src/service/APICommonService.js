@@ -304,6 +304,23 @@ class APICommonService {
 
     return this.axioDelete(`${url}`);
   };
+  // Product
+  getListProduct = async () => {
+    return this.axioGet(API_URL.PRODUCT);
+  }
+  // Get list slider ads
+  getListSliderAds = async () => {
+    return this.axioGet(API_URL.SLIDER);
+  }
+  // Get brand of product
+  getBrandOfProduct = async (productId) => {
+    let url = `${API_URL.BRAND}/` + productId;
+    return this.axioGet(url);
+  }
+  getCategoryProduct = async (productId) => {
+    let url = `${API_URL.CATERGORY}/` + productId;
+    return this.axioGet(url);
+  }
 }
 
 export default new APICommonService();
