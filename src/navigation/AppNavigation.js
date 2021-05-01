@@ -91,13 +91,13 @@ const SubDashboard = () => {
 
           let url = "";
           if (route.name == Constant.PAGE_KEY.MAIN_PAGE_KEY) {
-            url = "../../images/star.png"
+            url = "../../images/home.png"
           }
           else if (route.name == Constant.PAGE_KEY.DETAIL_PRODUCT_PAGE_KEY) {
             url = "../../images/star.png"
           }
           else if (route.name == Constant.PAGE_KEY.BASKET_PAGE_KEY) {
-            url = "../../images/star.png"
+            url = "../../images/shopping-cart.png"
           }
           else if (route.name == Constant.PAGE_KEY.VIDEO_PAGE_KEY) {
             url = "../../images/star.png"
@@ -105,9 +105,9 @@ const SubDashboard = () => {
           return (
             <View style={{ alignSelf: 'center' }}>
               <Image style={{ width: 20, height: 20, tintColor: focused ? ColorApp.yellow : ColorApp.gray1D2129 }}
-                source={route.name == Constant.PAGE_KEY.MAIN_PAGE_KEY ? require("../../images/star.png")
+                source={route.name == Constant.PAGE_KEY.MAIN_PAGE_KEY ? require("../../images/home.png")
                   : route.name == Constant.PAGE_KEY.DETAIL_PRODUCT_PAGE_KEY ? require("../../images/star.png")
-                    : route.name == Constant.PAGE_KEY.BASKET_PAGE_KEY ? require("../../images/star.png") : require("../../images/star.png")}
+                    : route.name == Constant.PAGE_KEY.BASKET_PAGE_KEY ? require("../../images/shopping-cart.png") : require("../../images/star.png")}
                 resizeMode={'contain'}
 
               >
@@ -124,9 +124,6 @@ const SubDashboard = () => {
       {/* Giỏ hàng */}
       <BottomTab.Screen
         name={Constant.PAGE_KEY.BASKET_PAGE_KEY} component={BasketPageStack}>
-      </BottomTab.Screen>
-      {/* Videos */}
-      <BottomTab.Screen name={Constant.PAGE_KEY.VIDEO_PAGE_KEY} component={Videos}>
       </BottomTab.Screen>
     </BottomTab.Navigator>
   )

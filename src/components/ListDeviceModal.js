@@ -1,55 +1,8 @@
 import React from "react";
-import { Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native";
+import { Image, PixelRatio, StyleSheet, Text, TouchableOpacity, View, FlatList, ScrollView } from "react-native";
 import Animated, { Easing } from "react-native-reanimated";
 import ColorApp from "../utils/ColorApp";
 import Constants from "../utils/Constants";
-
-
-const DATA = [
-    {
-        id: 0,
-        city: "Ha noi1",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi2",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi3",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi5",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi5",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi3",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi4",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-]
-
 
 export const ListDeviceModal = (props) => {
     let translateXValue = React.useRef(new Animated.Value(0));
@@ -116,31 +69,48 @@ export const ListDeviceModal = (props) => {
                 ]
             }]}
             >
-                <View style={{ flex: 1, padding: 20 }}>
-                    <FlatList
-                        // style={{ flexGrow: 0, minHeight: 70, maxHeight: 400, maxWidth: 300, backgroundColor: ColorApp.white }}
-                        data={DATA}
-                        contentContainerStyle={{
-                            flexGrow: 1,
-                            alignItems: 'center',
-                            paddingVertical: 20
-                        }}
-                        renderItem={({ item, index }) => {
+                <ScrollView style={{ flex: 1, padding: 20 }}>
+                    {/* DANH MUC */}
+                    <Text style={styles.title}>
+                        DANH SÁCH LOẠI
+                    </Text>
+
+                    <View style={{ marginTop: 10 }}>
+                        {props.catergory  && props.catergory.map(item => {
                             return (
                                 <TouchableOpacity onPress={() => {
+                                    console.log("onPressCategory, ", item)
+                                    props?.onPressCategory(item.category_id)
                                 }}>
-                                    <View style={{ height: 40, width: 150, marginHorizontal: 30,justifyContent: 'center', marginTop: 10 }}>
+                                    <View style={{ height: 40, width: 150, marginRight: 30, justifyContent: 'center', marginTop: 10 }}>
                                         <Text style={styles.textStyle}>
-                                            {item.District}
+                                            {item?.category_name}
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
                             )
-                        }}
-                    >
-
-                    </FlatList>
-                </View>
+                        })}
+                    </View>
+                    <Text style={[styles.title, { marginTop: 20 }]}>
+                        DANH SÁCH HÃNG
+                    </Text>
+                    <View style={{ marginTop: 10 }}>
+                        {props.brands && props.brands.map(item => {
+                            return (
+                                <TouchableOpacity onPress={() => {
+                                    console.log("onPressBran, ", item)
+                                    props?.onPressBrand(item.brand_id)
+                                }}>
+                                    <View style={{ height: 40, width: 150, marginRight: 30, justifyContent: 'center', marginTop: 10 }}>
+                                        <Text style={styles.textStyle}>
+                                            {item?.brand_name}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )
+                        })}
+                    </View>
+                </ScrollView>
             </Animated.View>
         </View >
     )
@@ -208,5 +178,10 @@ const styles = StyleSheet.create({
         width: 16,
         height: 12,
         marginLeft: 8
+    },
+    title: {
+        fontSize: PixelRatio.roundToNearestPixel(16),
+        fontWeight: 'bold',
+        color: ColorApp.red
     }
 })

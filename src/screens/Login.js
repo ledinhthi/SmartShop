@@ -25,6 +25,11 @@ export const Login = observer(({ route, navigation }) => {
     const onRegisterBtn = () => {
         navigation.navigate(Constant.PAGE_KEY.REGISTER_PAGE_KEY)
     }
+    React.useEffect(() => {
+        if (AuthStore.errLogin) {
+            Util.showNoticeAlert(AuthStore.errLogin);
+        }
+    }, [AuthStore.errLogin])
     return (
         <TouchableWithoutFeedback onPress={() => {
             Keyboard.dismiss();

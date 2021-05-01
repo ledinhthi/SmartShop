@@ -10,8 +10,13 @@ class ProductStore {
     @observable listProduct = null;
     @observable isLoading = false;
     @observable listBrand = null;
+    @observable listCatergory = [];
     @observable listImageSliderAds = null;
+    @observable stringError = "";
     // Action
+    @action setStrinError = (stringError) => {
+        this.stringError = stringError;
+    }
     @action setIsLoading = (isLoading) => {
         this.isLoading = isLoading;
     }
@@ -23,6 +28,9 @@ class ProductStore {
     }
     @action setListImageSliderAds = (listSliderAds) => {
         this.listImageSliderAds = listSliderAds;
+    }
+    @action setCatergories = (catergory) => {
+        this.listCatergory = catergory
     }
     @action getListProduct = async () => {
         this.setIsLoading(true);
@@ -52,6 +60,61 @@ class ProductStore {
             })
             .finally(() => {
 
+            })
+    }
+    @action getBrands = async () => {
+        await APICommonService.getBrands()
+            .then(brands => {
+                console.log("brands", brands)
+                this.setListBrand(brands)
+            })
+            .catch((error) => {
+                console.log("Error", error)
+                setStrinError(error)
+            })
+    }
+    @action getCatergory = async () => {
+        await APICommonService.getCategorys()
+            .then(catergories => {
+                console.log("catergories", catergories)
+                this.setCatergories(catergories)
+            })
+            .catch((error) => {
+                console.log("Error", error)
+                setStrinError(error)
+            })
+    }
+    @action getProductByBranId = (brandId) => {
+        this.setIsLoading(true);
+        APICommonService.getProductByBrandId(brandId)
+            .then(listProduct => {
+                if (listProduct && listProduct.length > 0) {
+                    this.setListProduct(listProduct)
+                }
+            })
+            .catch((error) => {
+                console.log("Error", error)
+                setStrinError(error)
+            })
+            .finally(() => {
+                this.setIsLoading(false);
+            })
+    }
+    @action getProductByCategoryId = (catergoryId) => {
+        this.setIsLoading(true);
+        APICommonService.getProductByCatergoryId(catergoryId)
+            .then(listProduct => {
+                console.log("listProduct", listProduct)
+                if (listProduct && listProduct.length > 0) {
+                    this.setListProduct(listProduct)
+                }
+            })
+            .catch((error) => {
+                console.log("Error", error)
+                setStrinError(error)
+            })
+            .finally(() => {
+                this.setIsLoading(false);
             })
     }
 }

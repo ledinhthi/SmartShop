@@ -17,106 +17,11 @@ import { ListCityModal } from "../components/ListCityModal"
 import { ListDistrictModal } from "../components/ListDistrictModal"
 import { ListWardModal } from "../components/ListWardModal"
 import { ListPaymentMethod } from "../components/ListPaymentMethod"
-import Constants from "../utils/Constants";
+import Constant from "../utils/Constants";
+import { set } from 'date-fns';
+import * as Util from "../utils/Util";
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
-
-const DATA_SLIDE = [
-    {
-        id: 0,
-        url: "https://www.lg.com/us/images/cell-phones/md07513841/gallery/Desktop-01.jpg",
-        price: '1000',
-        phoneName: "IphoneX",
-        content: "May dien thoai nay ok"
-    },
-    {
-        id: 0,
-        url: "https://www.zdnet.com/a/hub/i/2021/01/07/a20ae151-6384-47c4-a75e-802455021c41/apple-iphone-12-best-phones-review.png",
-        price: '20000',
-        phoneName: "Ihpone 12",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    }
-]
-
-const DATA = [
-    {
-        id: 0,
-        city: "Ha noi1",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi2",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi3",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi5",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi5",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi3",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-    {
-        id: 0,
-        city: "Ha noi4",
-        District: "Ba dinh",
-        Ward: "Thu le"
-    },
-]
 
 
 const ProductItem = (props) => {
@@ -127,29 +32,29 @@ const ProductItem = (props) => {
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', paddingVertical: 10 }}>
                 {/* Image */}
                 <Image style={{ width: 100, height: '100%', marginLeft: 10 }}
-                    source={{ uri: props?.item.url }}
+                    source={{ uri: `${Constant.PREFIX_URL.PRODUCT + props.item.product_image}` }}
                     resizeMode={'contain'}
                 >
                 </Image>
                 {/* Content */}
-                <View style={{ justifyContent: 'center', height: '100%', marginLeft: 20, paddingRight: 10 }}>
+                <View style={{ justifyContent: 'center', height: '100%', width: '50%', marginLeft: 20, paddingRight: 10 }}>
                     <Text style={styles.textStyle}
-                        numberOfLines={1}
+                        numberOfLines={2}
                         ellipsizeMode={'tail'}
                     >
-                        {`${props?.item.phoneName || ""}`}
+                        {`${props.item?.product_name || ""}`}
+                    </Text>
+                    <Text style={[styles.textStyle, { color: ColorApp.yellow, width: '50%', fontWeight: 'bold' }]}
+                        numberOfLines={2}
+                        ellipsizeMode={'tail'}
+                    >
+                        {props.item?.price_cost ? `${props.item?.price_cost} VND` : ""}
                     </Text>
                     <Text style={[styles.textStyle, { color: ColorApp.yellow, fontWeight: 'bold' }]}
                         numberOfLines={1}
                         ellipsizeMode={'tail'}
                     >
-                        {`${props?.item.price || ""}`}
-                    </Text>
-                    <Text style={[styles.textStyle, { color: ColorApp.yellow, fontWeight: 'bold' }]}
-                        numberOfLines={1}
-                        ellipsizeMode={'tail'}
-                    >
-                        Số lượng 1
+                        Số lượng: {props.item?.product_quantity}
                     </Text>
                 </View>
             </View>
@@ -160,15 +65,163 @@ const ProductItem = (props) => {
 
 
 export const OrderPage = observer(({ route, navigation }) => {
+    const { OrderStore, AuthStore } = useStore();
     const [isShowListDistrictModal, setIsShowListDistrictModal] = React.useState(false);
     const [isShowListWardModal, setIsShowListWardModal] = React.useState(false);
     const [isShowListCityModal, setIsShowListCityModal] = React.useState(false);
     const [isShowMethodPayment, setIsShowMethodPayment] = React.useState(false);
     const [isShowOrderedInformation, setIsShowOrderedInformation] = React.useState(false);
-    const [listCity, setListCity] = React.useState(DATA);
-    const [listDistrict, setListDistrict] = React.useState(DATA);
-    const [listWard, setListWard] = React.useState(DATA);
-    const methodPayment = React.useRef(["Tiền mặt", "Chuyển khoản"]);
+    const [chosenListdProduct, setChosenListProduct] = React.useState([]);
+    const [methodPayment, setMethodPayment] = React.useState([
+        { type: "Tiền mặt", value: 1 },
+        { type: "Chuyển khoản", value: 2 }
+    ]);
+    const [chosenDistrict, setChosenDistrict] = React.useState("");
+    const [chosenCity, setChosenCity] = React.useState("");
+    const [chosenWard, setChosenWard] = React.useState("");
+    const [chosenMethod, setChosenMethod] = React.useState("");
+    const feeShip = React.useRef("").current;
+    let shippingInfor = React.useRef({
+        shipping_name: "",
+        shipping_address: "",
+        shipping_phone: "",
+        shipping_email: "",
+        shipping_notes: "",
+    })
+    let [totalMoney, setTotalMoney] = React.useState();
+    React.useEffect(() => {
+        let chosenListdProduct = route?.params?.orderProduct;
+        if (chosenListdProduct) {
+            setChosenListProduct(chosenListdProduct)
+            let moneyCalculated = 0;
+            chosenListdProduct.map(product => {
+                moneyCalculated = moneyCalculated + (product.price_cost * product.product_quantity)
+            })
+            setTotalMoney(moneyCalculated);
+        }
+        // let orderProduct = route.params ?;
+        OrderStore.getListCity();
+        return () => {
+            OrderStore.setListChosenProduct([]);
+        }
+    }, [])
+    function makeid(length) {
+        var result = [];
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result.push(characters.charAt(Math.floor(Math.random() *
+                charactersLength)));
+        }
+        return result.join('');
+    }
+    const orderProduct = async () => {
+        console.log("shippingInfor", shippingInfor)
+
+        let isDoneMakeShipping = false;
+        let isDoneMakeOrder = false;
+        let isDoneMakeDetail = false;
+        OrderStore.setIsLoading(true);
+        await OrderStore.makeShipping(shippingInfor)
+            .then(response => {
+                console.log("userInfo", AuthStore.userInfo)
+                console.log("Response", response)
+                if (!response) {
+                    return;
+                }
+                isDoneMakeShipping = true;
+                let orderParam = {
+                    customer_id: AuthStore.userInfo.customer_id,
+                    shipping_id: response.shipping_id,
+                    order_status: 1,
+                    order_code: makeid(5),
+                    order_date: new Date()
+                }
+                OrderStore.makeOrder(orderParam)
+                    .then(async response => {
+                        console.log("makeOrder Response", response)
+                        if (!response) {
+                            return;
+                        }
+                        isDoneMakeOrder = true;
+                        if (chosenListdProduct.length > 0) {
+                            let arrayPromise = [];
+                            chosenListdProduct.forEach(product => {
+                                // Cal culate free ship
+                                let orderDetailParams = {
+                                    order_code: response.order_code,
+                                    product_id: product?.product_id || 0,
+                                    product_name: product?.product_name || "",
+                                    product_price: product?.product_price || "",
+                                    product_sales_quantity: product?.product_quantity || "",
+                                    product_coupon: "no",
+                                    product_feeship: "10000"
+                                }
+                                arrayPromise.push(OrderStore.makeOrderDetail(orderDetailParams))
+                            })
+
+                            // Promise all
+                            await Promise.all(arrayPromise)
+                                .then(response => {
+                                    console.log("arrayPromise", response)
+                                    isDoneMakeDetail = true;
+                                })
+                                .catch(error => {
+                                    isDoneMakeDetail = false;
+                                    console.log("error", error)
+                                })
+                        }
+                        if (isDoneMakeShipping && isDoneMakeOrder && isDoneMakeDetail) {
+                            Util.showNoticeAlert("Đã đặt hàng thành công")
+
+                            navigation.navigate(Constant.PAGE_KEY.MAIN_PAGE_KEY);
+                        }
+                        else {
+
+                            Util.showNoticeAlert("Đặt hàng không thành công")
+                        }
+                    })
+                    .catch(error => {
+                        console.log("error", error)
+                    })
+            })
+            .catch(error => {
+                console.log("makeShipping error,", error)
+            })
+            .finally(() => {
+                OrderStore.setIsLoading(false);
+            })
+
+    }
+
+    const onChoseCity = (city) => {
+        setChosenCity(city)
+        console.log("chosenCity", city)
+        OrderStore.getListDistrict(city.matp);
+    }
+    const onChoseDistrict = (district) => {
+        setChosenDistrict(district)
+        console.log("chosenDistrict", district)
+        OrderStore.getListWards(district.maqh);
+    }
+    const onChoseWard = (ward) => {
+        setChosenWard(ward)
+        console.log("chosenWard", ward)
+    }
+    const onChoseMethod = (method) => {
+        onChoseMethod(method)
+        console.log("chosenMethod", method)
+    }
+    const onCalculateFee = () => {
+        let params = {
+            fee_matp: chosenCity.matp,
+            fee_maqh: chosenDistrict.maqh,
+            fee_xaid: chosenWard.xaid,
+        }
+        OrderStore.calculateFee(params).then(response => {
+            console.log("response", response)
+        })
+    }
     return (
         <View style={styles.container}>
             <ScrollView
@@ -180,7 +233,7 @@ export const OrderPage = observer(({ route, navigation }) => {
                     scrollEnabled={true}
                     showsVerticalScrollIndicator={true}
                     style={{ marginVertical: 20 }}
-                    data={DATA_SLIDE}
+                    data={chosenListdProduct || []}
                     renderItem={({ item, index }) => {
                         return (
                             <ProductItem item={item} navigation={navigation} />
@@ -205,6 +258,12 @@ export const OrderPage = observer(({ route, navigation }) => {
                         setIsShowListWardModal={setIsShowListWardModal}
                         setIsShowMethodPayment={setIsShowMethodPayment}
                         setIsShowOrderedInformation={setIsShowOrderedInformation}
+                        shippingInfor={shippingInfor.current}
+                        chosenDistrict={chosenDistrict.name_quanhuyen}
+                        chosenCity={chosenCity.name_city}
+                        chosenWard={chosenWard.name_xaphuong}
+                        chosenMethod={chosenMethod == 1 ? "Tiền mặt" : "Chuyển khoản"}
+                        onCalculateFee={onCalculateFee}
                     />
                 </View>
             </ScrollView>
@@ -216,12 +275,12 @@ export const OrderPage = observer(({ route, navigation }) => {
                         Tổng thanh toán
                     </Text>
                     <Text style={[styles.textStyle, { fontWeight: '400', color: ColorApp.orangeFD6545 }]}>
-                        0đ
+                        {totalMoney}đ
                     </Text>
                 </View>
                 {/*  */}
                 {/* Đặt hàng */}
-                <TouchableOpacity >
+                <TouchableOpacity onPress={orderProduct}>
                     <View style={styles.orderBtn}>
                         <Text style={[styles.textStyle, { fontSize: PixelRatio.roundToNearestPixel(15), fontWeight: 'bold', color: ColorApp.white }]}>
                             Đặt Hàng
@@ -230,13 +289,17 @@ export const OrderPage = observer(({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
             {/* Is Show list city modal */}
-            {isShowListCityModal && <ListCityModal setIsShowModal={setIsShowListCityModal} type={Constants.ORDER_MODAL_TYPE.LIST_CITY_MODAL} data={DATA} />}
+            {isShowListCityModal && <ListCityModal isShowListCityModal={isShowListCityModal} setIsShowModal={setIsShowListCityModal} type={Constant.ORDER_MODAL_TYPE.LIST_CITY_MODAL} data={OrderStore.listCity} onChoseCity={onChoseCity} />}
             {/* Show list district modal */}
-            {isShowListDistrictModal && <ListDistrictModal setIsShowModal={setIsShowListDistrictModal} type={Constants.ORDER_MODAL_TYPE.LIST_DISTRICT_MODAL} data={DATA} />}
+            {isShowListDistrictModal && <ListDistrictModal setIsShowModal={setIsShowListDistrictModal} type={Constant.ORDER_MODAL_TYPE.LIST_DISTRICT_MODAL} data={OrderStore.listDistricts} onChoseDistrict={onChoseDistrict}
+            />}
             {/* Show list ward modal */}
-            {isShowListWardModal && <ListWardModal setIsShowModal={setIsShowListWardModal} type={Constants.ORDER_MODAL_TYPE.LIST_WARD_MODAL} data={DATA} />}
+            {isShowListWardModal && <ListWardModal setIsShowModal={setIsShowListWardModal} type={Constant.ORDER_MODAL_TYPE.LIST_WARD_MODAL} data={OrderStore.listWards} onChoseWard={onChoseWard}
+            />}
             {/* Show Method modal */}
-            {isShowMethodPayment && <ListPaymentMethod setIsShowModal={setIsShowMethodPayment} type={Constants.ORDER_MODAL_TYPE.PAYMENT_METHOD_MODAL} data={DATA} />}
+            {isShowMethodPayment && <ListPaymentMethod setIsShowModal={setIsShowMethodPayment} type={Constant.ORDER_MODAL_TYPE.PAYMENT_METHOD_MODAL} data={methodPayment} onChoseMethod={onChoseMethod} />}
+            {/* Show loading */}
+            {OrderStore.isLoading && <Util.indicatorProgress />}
         </View>
     )
 })
@@ -277,7 +340,7 @@ const styles = StyleSheet.create({
         marginTop: 100,
         zIndex: 9999,
         position: 'absolute',
-        width: Constants.deviceW,
+        width: Constant.deviceW,
         height: 70,
         flexDirection: 'row',
         alignItems: 'center',

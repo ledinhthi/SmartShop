@@ -8,7 +8,11 @@ export const ListDistrictModal = (props) => {
     let chosenItem = React.useRef().current;
     const setChosenItem = (chosenItem) => {
         chosenItem = chosenItem;
+        console.log("chosenItem", chosenItem)
+        props?.onChoseDistrict(chosenItem)
     }
+    React.useEffect(() => {
+    }, [])
     return (
         <View style={[styles.modalView, { ...StyleSheet.absoluteFillObject }]}>
             <Modal
@@ -42,7 +46,7 @@ export const ListDistrictModal = (props) => {
                                 }}>
                                     <View style={{ height: 40, width: 250, marginHorizontal: 30, borderWidth: 1, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
                                         <Text style={styles.textStyle}>
-                                            {item.District}
+                                            {item?.name_quanhuyen}
                                         </Text>
                                     </View>
                                 </TouchableOpacity>

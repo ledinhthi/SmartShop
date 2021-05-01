@@ -11,7 +11,8 @@ import { TxtInput } from '../components/TxtInput'
 import { ActionBtn } from '../components/ActionBtn'
 import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
-import Constants from "../utils/Constants"
+import Constant from '../utils/Constants';
+
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 
@@ -73,11 +74,22 @@ const ProductItem = (props) => {
     const increaseChosenNumber = () => {
         chosenNumber = chosenNumber + 1;
         setChosenNumber(chosenNumber)
+        props.item.product_quantity = chosenNumber;
     }
     const decreaseChosenNumber = () => {
-        chosenNumber = chosenNumber - 1;
-        setChosenNumber(chosenNumber)
+        if (chosenNumber == 0) {
+
+        }
+        else {
+            chosenNumber = chosenNumber - 1;
+            setChosenNumber(chosenNumber)
+            props.item.product_quantity = chosenNumber;
+        }
     }
+    React.useState(() => {
+        // Reset prodcut_quantity
+        props.item.product_quantity = 0;
+    }, [])
     return (
         <View style={styles.productItem}>
             {/* Checkbox */}
@@ -93,24 +105,24 @@ const ProductItem = (props) => {
                     ></Checkbox> */}
                 </View>
                 {/* Image */}
-                <Image style={{ width: 100, height: 200, marginLeft: 10 }}
-                    source={{ uri: props?.item.url }}
+                <Image style={{ width: 100, paddingVertical: 20, height: 200, marginLeft: 10 }}
+                    source={{ uri: `${Constant.PREFIX_URL.PRODUCT + props.item.product_image}` }}
                     resizeMode={'contain'}
                 >
                 </Image>
                 {/* Content */}
-                <View style={{ justifyContent: 'center', marginLeft: 20, paddingRight: 10 }}>
+                <View style={{ justifyContent: 'center', marginLeft: 20, width: '50%', paddingRight: 10 }}>
                     <Text style={styles.textStyle}
-                        numberOfLines={1}
+                        numberOfLines={2}
                         ellipsizeMode={'tail'}
                     >
-                        {`${props?.item.phoneName || ""}`}
+                        {`${props.item?.product_name || ""}`}
                     </Text>
                     <Text style={[styles.textStyle, { color: ColorApp.yellow, fontWeight: 'bold' }]}
-                        numberOfLines={1}
+                        numberOfLines={2}
                         ellipsizeMode={'tail'}
                     >
-                        {`${props?.item.price || ""}`}
+                        {props.item?.price_cost ? `${props.item?.price_cost} VND` : ""}
                     </Text>
                 </View>
             </View>
@@ -159,6 +171,7 @@ const ProductItem = (props) => {
 
 
 export const BasketStore = observer(({ route, navigation }) => {
+    const { OrderStore } = useStore()
     return (
         <View style={styles.container}>
             {/* Header */}
@@ -171,7 +184,7 @@ export const BasketStore = observer(({ route, navigation }) => {
                 scrollEnabled={true}
                 showsVerticalScrollIndicator={true}
                 style={{ marginVertical: 20 }}
-                data={DATA_SLIDE}
+                data={OrderStore.listChosenProduct || []}
                 renderItem={({ item, index }) => {
                     return (
                         <ProductItem item={item} navigation={navigation} />
@@ -190,16 +203,20 @@ export const BasketStore = observer(({ route, navigation }) => {
             </FlatList>
             {/* Đặt hàng */}
             <View style={{ marginTop: 20, alignSelf: 'flex-start', paddingHorizontal: 20 }}>
-                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(30), width: 100, 
-                    paddingHorizontal: 2, 
+                <TouchableOpacity style={{
+                    height: PixelRatio.roundToNearestPixel(30), width: 100,
+                    paddingHorizontal: 2,
                     flexDirection: 'row',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                      borderRadius: 3, backgroundColor: ColorApp.yellow }}
-                      onPress = {() => {
-                        navigation.navigate(Constants.PAGE_KEY.ORDER_PAGE_KEY);
-                      }}
-                      >
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 3, backgroundColor: ColorApp.yellow
+                }}
+                    onPress={() => {
+                        // Get Ote,
+                        console.log("OrderStore.listChosenProduct", OrderStore.listChosenProduct)
+                        navigation.navigate(Constant.PAGE_KEY.ORDER_PAGE_KEY, { orderProduct: OrderStore.listChosenProduct });
+                    }}
+                >
                     <Image style={{ height: 15, width: 15, tintColor: ColorApp.white }}
                         resizeMode='contain'
                         source={require("../../images/shopping-cart.png")}

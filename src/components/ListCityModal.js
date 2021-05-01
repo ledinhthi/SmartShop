@@ -9,8 +9,10 @@ export const ListCityModal = (props) => {
     let chosenItem = React.useRef().current;
     const setChosenItem = (chosenItem) => {
         chosenItem = chosenItem;
+        props.onChoseCity(chosenItem)
     }
     return (
+        props.isShowListCityModal &&
         <View style={[styles.modalView, { ...StyleSheet.absoluteFillObject }]}>
             <Modal
                 visible={true}
@@ -43,7 +45,7 @@ export const ListCityModal = (props) => {
                                 }}>
                                     <View style={{ height: 40, width: 250, marginHorizontal: 30, borderWidth: 1, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
                                         <Text style={styles.textStyle}>
-                                            {item.city}
+                                            {item?.name_city}
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
@@ -54,6 +56,7 @@ export const ListCityModal = (props) => {
                 </View>
             </Modal>
         </View>
+
     )
 }
 

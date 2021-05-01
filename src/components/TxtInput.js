@@ -12,10 +12,12 @@ export const TxtInput = (props) => {
                 {props.title || ""}
             </Text>
             <TextInput style={{ height: PixelRatio.roundToNearestPixel(48) }}
+
                 placeholder={props.placeholder || ""}
-                editable={props?.editable || true}
+                editable={props?.editable}
+                selectTextOnFocus={props?.editable}
                 placeholderTextColor={ColorApp.gray}
-                
+                defaultValue={props.value || ""}
                 onChangeText={(textChanged) => {
                     props?.setTextChanged(textChanged)
                 }}

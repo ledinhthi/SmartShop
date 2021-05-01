@@ -31,7 +31,7 @@ export const FastCheckProduct = observer(({ route, navigation }) => {
 
     React.useEffect(() => {
         let product = route?.params?.product;
-        APICommonService.getBrandOfProduct(product.brand_id)
+        APICommonService.getProductByBrandId(product.brand_id)
             .then(response => {
                 console.log("getBrandOfProduct response", response)
                 productInfor['brand_desc'] = response.brand_desc;
@@ -42,7 +42,7 @@ export const FastCheckProduct = observer(({ route, navigation }) => {
             .finally(() => {
                 console.log("finally")
             });
-        APICommonService.getCategoryProduct(product.category_id)
+        APICommonService.getProductByCatergoryId(product.category_id)
             .then(response => {
                 console.log("getCategoryProduct Response", response)
                 productInfor['category_desc'] = response.category_desc;

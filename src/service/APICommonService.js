@@ -313,13 +313,49 @@ class APICommonService {
     return this.axioGet(API_URL.SLIDER);
   }
   // Get brand of product
-  getBrandOfProduct = async (productId) => {
-    let url = `${API_URL.BRAND}/` + productId;
-    return this.axioGet(url);
+  getBrands = async () => {
+    return this.axioGet(API_URL.BRAND);
   }
-  getCategoryProduct = async (productId) => {
-    let url = `${API_URL.CATERGORY}/` + productId;
-    return this.axioGet(url);
+  getCategorys = async () => {
+    return this.axioGet(API_URL.CATERGORY_PARENT);
+  }
+  // List City
+  getListCity = async () => {
+    return this.axioGet(API_URL.CITY);
+  }
+  // List District
+  getListDistrict = async () => {
+    return this.axioGet(API_URL.PROVINCE);
+  }
+  // List wards
+  getListWards = async () => {
+    return this.axioGet(API_URL.WARDS);
+  }
+  // List band
+  getListBrand = async () => {
+    return this.axioGet(API_URL.BRAND)
+  }
+
+  getProductByBrandId = async (brandId) => {
+    let url = `${API_URL.BRAND}/` + brandId;
+    return this.axioGet(url)
+  }
+  getProductByCatergoryId = async (catergoryId) => {
+    let url = `${API_URL.CATERGORY}/` + catergoryId;
+    return this.axioGet(url)
+  }
+  makeShipping = async (params) => {
+    return this.axioPost(API_URL.SHIPPING, params);
+  }
+  makeOrder = async (params) => {
+    return this.axioPost(API_URL.ORDER, params);
+  }
+  makeOrderDetail = async (params) => {
+    return this.axioPost(API_URL.ORDER_DETAIL, params);
+  }
+  calculateFee = async (params) => {
+    let url = `${API_URL.FEE_SHIP}/` + params.fee_matp + '/' + params.fee_maqh + '/' + params.fee_id;
+    return this.axioPost(API_URL.FEE_SHIP)
   }
 }
 

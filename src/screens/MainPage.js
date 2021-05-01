@@ -17,62 +17,13 @@ import { useStore } from "../stores/useStore";
 import { observer } from "mobx-react";
 import { ListDeviceModal } from "../components/ListDeviceModal"
 import * as Util from "../utils/Util";
+import { MainStore } from '../stores/main-store';
 
-const DATA_SLIDE = [
-    {
-        id: 0,
-        url: "https://www.lg.com/us/images/cell-phones/md07513841/gallery/Desktop-01.jpg",
-        price: '1000',
-        phoneName: "IphoneX",
-        content: "May dien thoai nay ok"
-    },
-    {
-        id: 0,
-        url: "https://www.zdnet.com/a/hub/i/2021/01/07/a20ae151-6384-47c4-a75e-802455021c41/apple-iphone-12-best-phones-review.png",
-        price: '20000',
-        phoneName: "Ihpone 12",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    },
-    {
-        id: 1,
-        url: "https://cdn.mos.cms.futurecdn.net/GdcaWSadcCWbt3am8Typ3E.jpg",
-        price: '20000',
-        phoneName: "IphonXXX",
-        content: "May dien thoai nay ok DAY"
-    }
-]
 const DEVICE_WIDTH = Dimensions.get("screen").width;
 const DEVICE_HEIGHT = Dimensions.get("screen").height;
 
 const ProductItem = (props) => {
+    const { OrderStore } = useStore();
     return (
         <View style={{
             paddingHorizontal: 10,
@@ -119,7 +70,12 @@ const ProductItem = (props) => {
             </View>
             {/* Basket, fastCheck */}
             <View style={{ flexDirection: 'row', marginTop: 8, justifyContent: 'center' }}>
-                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(25), width: 100, paddingHorizontal: 2, flexDirection: 'row', alignItems: 'center', borderRadius: 3, backgroundColor: ColorApp.gray5d5d5d }}>
+                <TouchableOpacity style={{ height: PixelRatio.roundToNearestPixel(25), width: 100, paddingHorizontal: 2, flexDirection: 'row', alignItems: 'center', borderRadius: 3, backgroundColor: ColorApp.gray5d5d5d }}
+                    onPress={() => {
+                        console.log("On Them gio hang")
+                        OrderStore.addProductToOrder(props.item)
+                    }}
+                >
                     <Image style={{ height: 15, width: 15, tintColor: ColorApp.white }}
                         resizeMode='contain'
                         source={require("../../images/shopping-cart.png")}
@@ -156,7 +112,17 @@ export const MainPage = observer(({ route, navigation }) => {
         console.log("Mount");
         await ProductStore.getListSliderAds();
         await ProductStore.getListProduct();
+        await ProductStore.getBrands();
+        await ProductStore.getCatergory();
     }, [])
+    const onPressBrand = (brandId) => {
+        setIsShowListBranch(false);
+        ProductStore.getProductByBranId(brandId)
+    }
+    const onPressCategory = (categoryId) => {
+        setIsShowListBranch(false);
+        ProductStore.getProductByCategoryId(categoryId)
+    }
     return (
         ProductStore.listProduct ?
             <View style={styles.container}>
@@ -224,7 +190,7 @@ export const MainPage = observer(({ route, navigation }) => {
                         showsVerticalScrollIndicator={true}
                         style={{ marginTop: 20, flex: 1 }}
                         data={ProductStore.listProduct || null}
-                        // keyExtractor={(item, index) => `${item?.product_id} + ${index}`}
+                        keyExtractor={(item, index) => `1+ ${index}`}
                         renderItem={({ item, index }) => {
                             return (
                                 <ProductItem item={item} navigation={navigation} />
@@ -244,7 +210,10 @@ export const MainPage = observer(({ route, navigation }) => {
                     >
                     </FlatList>
                 </ScrollView>
-                {isShowListBranch && <ListDeviceModal isShowSliding={isShowListBranch} setIsShowSliding={setIsShowListBranch} />}
+                {isShowListBranch && <ListDeviceModal isShowSliding={isShowListBranch} setIsShowSliding={setIsShowListBranch} brands={ProductStore.listBrand} catergory={ProductStore.listCatergory}
+                    onPressBrand={onPressBrand}
+                    onPressCategory={onPressCategory}
+                />}
                 {/* Show loading */}
                 {ProductStore.isLoading && <Util.indicatorProgress />}
 

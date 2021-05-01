@@ -6,6 +6,7 @@ export const API_URL = {
     CUSTOMER: "customer",
     BRAND: "brand",
     CATERGORY: "category",
+    CATERGORY_PARENT: "categoryparent",
     PRODUCT: "product",
     SLIDER: "slider",
     COUPON: "coupon",
@@ -14,6 +15,7 @@ export const API_URL = {
     ORDER_DETAIL : "orderdetail",
     SHIPPING: "shipping",
     FREE_SHIP: "freeship",
+    FEE_SHIP: "feeship",
     CITY: "city",
     PROVINCE: "province",
     WARDS: "wards"

@@ -5,9 +5,10 @@ import Constants from "../utils/Constants";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 export const ListPaymentMethod = (props) => {
-    let chosenItem = React.useRef().current;
     const setChosenItem = (chosenItem) => {
-        chosenItem = chosenItem;
+        console.log("chosenItem", chosenItem)
+        props?.onChoseMethod(chosenItem.value)
+
     }
     return (
         <View style={[styles.modalView, { ...StyleSheet.absoluteFillObject }]}>
@@ -23,12 +24,12 @@ export const ListPaymentMethod = (props) => {
                     {/* Excape */}
                     <View >
                         <Text style={styles.textStyle, { color: ColorApp.white }}>
-                        PHƯƠNG THỨC THANH TOÁN
+                            PHƯƠNG THỨC THANH TOÁN
                         </Text>
                     </View>
                     <FlatList
                         style={{ flexGrow: 0, minHeight: 70, maxHeight: 400, maxWidth: 300, backgroundColor: ColorApp.white }}
-                        data={props.data}
+                        data={props.data || []}
                         contentContainerStyle={{
                             flexGrow: 1,
                             alignItems: 'center',
@@ -42,7 +43,7 @@ export const ListPaymentMethod = (props) => {
                                 }}>
                                     <View style={{ height: 40, width: 250, marginHorizontal: 30, borderWidth: 1, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
                                         <Text style={styles.textStyle}>
-                                            {item.District}
+                                            {item.type}
                                         </Text>
                                     </View>
                                 </TouchableOpacity>
