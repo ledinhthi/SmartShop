@@ -155,7 +155,7 @@ export const OrderPage = observer(({ route, navigation }) => {
                                     product_price: product?.product_price || "",
                                     product_sales_quantity: product?.product_quantity || "",
                                     product_coupon: "no",
-                                    product_feeship: "10000"
+                                    product_feeship: feeShip || "25000"
                                 }
                                 arrayPromise.push(OrderStore.makeOrderDetail(orderDetailParams))
                             })
@@ -220,6 +220,9 @@ export const OrderPage = observer(({ route, navigation }) => {
         }
         OrderStore.calculateFee(params).then(response => {
             console.log("response", response)
+            if (response) {
+                feeShip = response?.fee_feeship;
+            }
         })
     }
     return (
