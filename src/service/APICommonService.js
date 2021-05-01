@@ -354,8 +354,8 @@ class APICommonService {
     return this.axioPost(API_URL.ORDER_DETAIL, params);
   }
   calculateFee = async (params) => {
-    let url = `${API_URL.FEE_SHIP}/` + params.fee_matp + '/' + params.fee_maqh + '/' + params.fee_id;
-    return this.axioPost(API_URL.FEE_SHIP)
+    let url = `${API_URL.FEE_SHIP}/` + params.fee_matp + '/' + params.fee_maqh + '/' + params.fee_xaid;
+    return this.axioGet(url)
   }
 }
 
