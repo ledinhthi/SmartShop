@@ -122,7 +122,14 @@ export const OrderPage = observer(({ route, navigation }) => {
         let isDoneMakeOrder = false;
         let isDoneMakeDetail = false;
         OrderStore.setIsLoading(true);
-        await OrderStore.makeShipping(shippingInfor)
+        let shipping = {
+            shipping_name: shippingInfor.current.shipping_name,
+            shipping_address: shippingInfor.current.shipping_address,
+            shipping_phone: shippingInfor.current.shipping_address,
+            shipping_email: shippingInfor.current.shipping_email,
+            shipping_notes: shippingInfor.current.shipping_notes
+        }
+        await OrderStore.makeShipping(shipping)
             .then(response => {
                 console.log("userInfo", AuthStore.userInfo)
                 console.log("Response", response)
