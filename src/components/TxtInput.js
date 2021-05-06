@@ -12,7 +12,7 @@ export const TxtInput = (props) => {
                 {props.title || ""}
             </Text>
             <TextInput style={{ height: PixelRatio.roundToNearestPixel(48) }}
-
+                secureTextEntry = {props.isSecurePassword || false}
                 placeholder={props.placeholder || ""}
                 editable={props?.editable}
                 selectTextOnFocus={props?.editable}

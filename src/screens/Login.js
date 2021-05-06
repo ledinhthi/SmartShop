@@ -44,7 +44,9 @@ export const Login = observer(({ route, navigation }) => {
                 <TxtInput setTextChanged={setUserName} txtInput={[styles.input, { marginTop: 50 }]} placeholder={"Nhập tài khoản"} title={"Tài khoản"}>
                 </TxtInput>
                 {/* Password Input */}
-                <TxtInput setTextChanged={setPassword} txtInput={[styles.input]} placeholder={"Nhập mật khẩu"} title={"Mật khẩu"}>
+                <TxtInput setTextChanged={setPassword} txtInput={[styles.input]} placeholder={"Nhập mật khẩu"} title={"Mật khẩu"}
+                isSecurePassword = {true}
+                >
                 </TxtInput>
                 {/* Forgot, register */}
                 <View style={{ width: '80%', flexDirection: 'row', marginTop: 10 }}>
